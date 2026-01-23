@@ -1,0 +1,83 @@
+{
+  "rows": [
+    {
+      "id": "29285312-a7ec-49a7-9d87-9b0466d7aa02",
+      "ticketCode": "1",
+      "client": "Mark Hans",
+      "clientId": "96225512",
+      "status": "DIAGNOSIS",
+      "brand": "HP",
+      "model": "A546",
+      "phone": "933065123",
+      "createdAt": "2025-12-08T11:42:37.071Z"
+    },
+    {
+      "id": "292823-a7ec-49a7-9d87-9b0466d7aa02",
+      "ticketCode": "2",
+      "client": "Erick Wood",
+      "clientId": "76225523",
+      "status": "AWAITING",
+      "brand": "ASUS",
+      "model": "B543",
+      "phone": "923065123",
+      "createdAt": "2025-12-08T12:42:37.071Z"
+    },
+    {
+      "id": "2943596-a7ec-49a7-9d87-9b0466d7aa02",
+      "ticketCode": "3",
+      "client": "Ethan Nusser",
+      "clientId": "45225543",
+      "status": "REPAIR",
+      "brand": "LENOVO",
+      "model": "D234",
+      "phone": "913023123",
+      "createdAt": "2025-12-08T15:42:37.071Z"
+    },
+    {
+      "id": "234565396-a7ec-49a7-9d87-9b0466d7aa02",
+      "ticketCode": "4",
+      "client": "Ely Saenz",
+      "clientId": "65225543",
+      "status": "READY",
+      "brand": "MACBOOK PRO",
+      "model": "M4",
+      "phone": "967061223",
+      "createdAt": "2025-12-08T17:42:37.071Z"
+    },
+    {
+      "id": "29285396-a7ec-49a7-9d87-9b044567aa02",
+      "ticketCode": "5",
+      "client": "Gerald Ram",
+      "clientId": "78225543",
+      "status": "DELIVERED",
+      "brand": "SAMSUNG",
+      "model": "Z346",
+      "phone": "999065123",
+      "createdAt": "2025-12-08T18:42:37.071Z"
+    },
+    {
+      "id": "29285396-a7ec-49a746547-9b0466d7aa02",
+      "ticketCode": "6",
+      "client": "John Doe",
+      "clientId": "21225543",
+      "status": "DECLINED",
+      "brand": "TEROS",
+      "model": "Y5674",
+      "phone": "922065156",
+      "createdAt": "2025-12-09T18:42:37.071Z"
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "pageSize": 10,
+    "total": 6,
+    "totalPages": 1
+  },
+  "statusCount": {
+    "REPAIR": 1,
+    "READY": 1,
+    "DECLINED": 1,
+    "DIAGNOSIS": 2,
+    "DELIVERED": 0
+  }
+}
