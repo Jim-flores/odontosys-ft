@@ -1,11 +1,13 @@
 import ENV from "@/config/env";
+import { ErrorResponse } from "@/interfaces/ErrorType";
 import StorageAdapter from "@/storage/StorageAdapter";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import axios from "axios";
 import { toast } from "sonner";
 
 const api = axios.create({
-  baseURL: ENV.API_URL + "/api",
+  // baseURL: ENV.API_URL + "/api",
+  baseURL: ENV.API_URL,
 });
 
 let requestsCount = 0;
@@ -48,7 +50,8 @@ api.interceptors.response.use(
   },
   (err) => {
     hideLoader(err.config?.noLoader);
-    toast.error(err.response?.data?.message || "Error desconocido");
+    const error = err.response.data as ErrorResponse;
+    toast.error(error.error.message || "Error desconocido");
     return Promise.reject(err);
   },
 );

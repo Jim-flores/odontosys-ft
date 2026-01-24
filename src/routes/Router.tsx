@@ -6,6 +6,8 @@ import NotFoundPage from "@/pages/NotFoundPage";
 import Charts from "@/modules/charts/Charts";
 import TableExample from "@/modules/tables/TableExample";
 import FormExample from "@/modules/forms/FormExample";
+import WelcomePage from "@/layouts/dashboard/WelcomePage";
+import UsersPage from "@/modules/users/pages/UsersPage";
 
 const Router = () => {
   return (
@@ -25,9 +27,11 @@ const Router = () => {
 
         <Route element={<PrivateRoutes />}>
           <Route path="/dashboard" element={<Layout />}>
+            <Route path="" element={<WelcomePage />} />
             <Route path="charts" element={<Charts />} />
             <Route path="tables" element={<TableExample />} />
             <Route path="forms" element={<FormExample />} />
+            <Route path="users" element={<UsersPage />} />
           </Route>
         </Route>
 

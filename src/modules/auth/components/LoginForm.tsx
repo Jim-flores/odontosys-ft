@@ -21,6 +21,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router";
+import api from "@/api/api";
 
 const LoginForm = ({
   className,
@@ -39,8 +40,10 @@ const LoginForm = ({
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    localStorage.setItem("token", values.email + values.password);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const response = await api.post("auth/login", values);
+    if (!response.data.token) return;
+    localStorage.setItem("token", response.data.token);
     navigate("/dashboard");
   }
 

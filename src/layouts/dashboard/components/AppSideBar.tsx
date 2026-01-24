@@ -66,6 +66,10 @@ const data = {
           title: "Formulario",
           url: "/dashboard/forms",
         },
+        {
+          title: "Usuarios",
+          url: "/dashboard/users",
+        },
       ],
     },
     {

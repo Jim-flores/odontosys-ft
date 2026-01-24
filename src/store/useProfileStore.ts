@@ -1,0 +1,85 @@
+import api from "@/api/api";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+
+interface LoggedProps extends ProfileProps {
+  hasHydrated: boolean;
+  setUser: ({
+    id,
+    status,
+    name,
+    lastName,
+    email,
+    createdAt,
+    permissions,
+    roles,
+  }: ProfileProps) => void;
+  clearUser: () => void;
+  setHasHydrated: (state: boolean) => void;
+}
+export const useLoggedStore = create<LoggedProps>()(
+  persist(
+    (set) => ({
+      id: "",
+      name: "",
+      lastName: "",
+      email: "",
+      status: "",
+      createdAt: "",
+      permissions: [],
+      roles: [],
+      hasHydrated: false,
+      setUser: ({
+        id,
+        name,
+        lastName,
+        email,
+        roles,
+        createdAt,
+        permissions,
+        status,
+      }: ProfileProps) =>
+        set({
+          id,
+          name,
+          lastName,
+          email,
+          roles,
+          createdAt,
+          permissions,
+          status,
+        }),
+      clearUser: () => {
+        set({
+          id: "",
+          name: "",
+          lastName: "",
+          email: "",
+          status: "",
+          createdAt: "",
+          permissions: [],
+          roles: [],
+        });
+        sessionStorage.removeItem("profile-store");
+      },
+      setHasHydrated: (state) => set({ hasHydrated: state }),
+    }),
+    {
+      name: "profile-store",
+      storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        if (state) state.setHasHydrated(true);
+      },
+    },
+  ),
+);
+
+export const getProfile = async () => {
+  try {
+    const state = useLoggedStore.getState();
+    const { data } = await api.get("/auth/profile");
+    state.setUser(data);
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
+};

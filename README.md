@@ -21,6 +21,7 @@ A modern React application template built with TypeScript, Vite, and shadcn/ui.
 ```bash
 npm install
 npm run dev
+cp .env.example .env
 ```
 
 ## Scripts
