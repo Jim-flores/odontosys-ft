@@ -16,3 +16,17 @@ interface ProfileProps {
   roles: RolesProps[];
   permissions: PermissionsProps[];
 }
+interface BranchesListProps {
+  id: string;
+  name: string;
+  address: string;
+  phone: string;
+  createdAt: string;
+}
+interface CompanyProps {
+  id: string;
+  name: string;
+  description: string;
+  logoUrl: string;
+  createdAt: string;
+}

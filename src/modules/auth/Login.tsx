@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { useMediaQuery } from "@react-hook/media-query";
 import LoginForm from "./components/LoginForm";
+import { useEffect } from "react";
+import { getCompany } from "@/store/useCompanyStore";
 
 const Login = () => {
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
@@ -10,7 +12,9 @@ const Login = () => {
     translateX: "-50%",
     translateY: "-50%",
   };
-
+  useEffect(() => {
+    getCompany();
+  }, []);
   return (
     <div className="relative flex h-screen w-full p-2 overflow-hidden bg-secondary">
       {/* Imagen como fondo en dispositivos pequeños */}

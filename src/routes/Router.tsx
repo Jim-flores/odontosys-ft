@@ -8,6 +8,7 @@ import TableExample from "@/modules/tables/TableExample";
 import FormExample from "@/modules/forms/FormExample";
 import WelcomePage from "@/layouts/dashboard/WelcomePage";
 import UsersPage from "@/modules/users/pages/UsersPage";
+import CompanyPage from "@/modules/company/pages/CompanyPage";
 
 const Router = () => {
   return (
@@ -32,6 +33,7 @@ const Router = () => {
             <Route path="tables" element={<TableExample />} />
             <Route path="forms" element={<FormExample />} />
             <Route path="users" element={<UsersPage />} />
+            <Route path="company" element={<CompanyPage />} />
           </Route>
         </Route>
 

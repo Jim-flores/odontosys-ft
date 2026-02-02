@@ -2,7 +2,7 @@ import api from "@/api/api";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-interface LoggedProps extends ProfileProps {
+interface UserProps extends ProfileProps {
   hasHydrated: boolean;
   setUser: ({
     id,
@@ -13,11 +13,11 @@ interface LoggedProps extends ProfileProps {
     createdAt,
     permissions,
     roles,
-  }: ProfileProps) => void;
+  }: UserProps) => void;
   clearUser: () => void;
   setHasHydrated: (state: boolean) => void;
 }
-export const useLoggedStore = create<LoggedProps>()(
+export const useProfileStore = create<UserProps>()(
   persist(
     (set) => ({
       id: "",
@@ -76,7 +76,7 @@ export const useLoggedStore = create<LoggedProps>()(
 
 export const getProfile = async () => {
   try {
-    const state = useLoggedStore.getState();
+    const state = useProfileStore.getState();
     const { data } = await api.get("/auth/profile");
     state.setUser(data);
   } catch (error) {

@@ -31,6 +31,7 @@ export function NavMain({
     items?: {
       title: string;
       url: string;
+      icon?: LucideIcon;
     }[];
   }[];
 }) {
@@ -68,7 +69,13 @@ export function NavMain({
                       {item.items.map((subItem) => (
                         <SidebarMenuSubItem key={subItem.title}>
                           <SidebarMenuSubButton asChild>
-                            <span onClick={() => handleRedirect(subItem.url)}>
+                            <span
+                              onClick={() => handleRedirect(subItem.url)}
+                              className="cursor-pointer"
+                            >
+                              {subItem.icon && (
+                                <subItem.icon className="mr-2 h-4 w-4" />
+                              )}
                               <span>{subItem.title}</span>
                             </span>
                           </SidebarMenuSubButton>

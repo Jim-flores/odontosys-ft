@@ -4,10 +4,10 @@ import StorageAdapter from "@/storage/StorageAdapter";
 import { useLoaderStore } from "@/store/useLoaderStore";
 import axios from "axios";
 import { toast } from "sonner";
-
+export const API_URL = ENV.API_URL;
 const api = axios.create({
   // baseURL: ENV.API_URL + "/api",
-  baseURL: ENV.API_URL,
+  baseURL: API_URL,
 });
 
 let requestsCount = 0;

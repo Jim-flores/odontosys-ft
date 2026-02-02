@@ -4,10 +4,12 @@ import * as React from "react";
 import {
   ArrowUpCircleIcon,
   AudioWaveform,
+  Building2Icon,
   Command,
   GalleryVerticalEnd,
   Settings2,
   SquareTerminal,
+  User2Icon,
 } from "lucide-react";
 
 import {
@@ -69,14 +71,21 @@ const data = {
         {
           title: "Usuarios",
           url: "/dashboard/users",
+          icon: User2Icon,
         },
       ],
     },
     {
-      title: "Settings",
+      title: "Configuración",
       url: "#",
       icon: Settings2,
-      disabled: true,
+      items: [
+        {
+          title: "Compañia",
+          url: "/dashboard/company",
+          icon: Building2Icon,
+        },
+      ],
     },
   ],
 };
