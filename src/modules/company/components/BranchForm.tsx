@@ -1,4 +1,3 @@
-import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -11,6 +10,8 @@ import InputFx from "@/components/customFormFields/InputFx";
 import { useBranchCreateQuery } from "../hooks/useBranchCreateQuery";
 import { useBranchUpdateQuery } from "../hooks/useBranchUpdateQuery";
 import { useEffect } from "react";
+import { useCompanyStore } from "@/store/useCompanyStore";
+import { FormWrapper } from "@/components/customFormFields/FormWrapper";
 
 interface BranchFormProps {
   data?: BranchSchema;
@@ -21,13 +22,15 @@ export const BranchForm = ({ data }: BranchFormProps) => {
     useBranchCreateQuery();
   const { mutate: updateBranch, isPending: isUpdating } =
     useBranchUpdateQuery();
-
+  const { company } = useCompanyStore();
+  console.log(company.id);
   const form = useForm<BranchRequestSchema>({
     resolver: zodResolver(branchRequestSchema),
     defaultValues: {
       name: "",
       address: "",
       phone: "",
+      companyId: company.id,
     },
   });
 
@@ -37,12 +40,6 @@ export const BranchForm = ({ data }: BranchFormProps) => {
         name: data.name,
         address: data.address || "",
         phone: data.phone || "",
-      });
-    } else {
-      form.reset({
-        name: "",
-        address: "",
-        phone: "",
       });
     }
   }, [data, form]);
@@ -56,29 +53,35 @@ export const BranchForm = ({ data }: BranchFormProps) => {
   };
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <InputFx<BranchRequestSchema>
-          name="name"
-          label="Nombre"
-          placeholder="Nombre de la sucursal"
-          required
-        />
-        <InputFx<BranchRequestSchema>
-          name="address"
-          label="Dirección"
-          placeholder="Dirección de la sucursal"
-        />
-        <InputFx<BranchRequestSchema>
-          name="phone"
-          label="Teléfono"
-          placeholder="Teléfono de la sucursal"
-        />
+    <FormWrapper
+      form={form}
+      onSubmit={onSubmit}
+      className="space-y-4"
+      onError={(err) => console.log(err)}
+    >
+      <InputFx<BranchRequestSchema>
+        name="name"
+        label="Nombre"
+        placeholder="Nombre de la sucursal"
+      />
+      <InputFx<BranchRequestSchema>
+        name="address"
+        label="Dirección"
+        placeholder="Dirección de la sucursal"
+      />
+      <InputFx<BranchRequestSchema>
+        name="phone"
+        label="Teléfono"
+        placeholder="Teléfono de la sucursal"
+        onInput={(e) => {
+          e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "");
+        }}
+        maxLength={9}
+      />
 
-        <Button type="submit" disabled={isCreating || isUpdating}>
-          {isCreating || isUpdating ? "Guardando..." : "Guardar"}
-        </Button>
-      </form>
-    </Form>
+      <Button type="submit" disabled={isCreating || isUpdating}>
+        {isCreating || isUpdating ? "Guardando..." : "Guardar"}
+      </Button>
+    </FormWrapper>
   );
 };

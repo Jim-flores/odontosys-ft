@@ -16,8 +16,11 @@ import {
 } from "../constants/userConstants";
 import UsersServices from "../services/users.service";
 import { Pencil, Trash2 } from "lucide-react";
+import { useDialogStore } from "@/store/useDialogStore";
+import { UserFormDialog } from "../components/UsersFormDialog";
 
 const UsersPage = () => {
+  const { openDialog } = useDialogStore();
   const columns = useMemo<ColumnDef<UserDTO>[]>(() => {
     return [
       {
@@ -89,7 +92,13 @@ const UsersPage = () => {
     >
       <div className="flex justify-between items-center">
         <Typography variant="h2">Lista de usuarios</Typography>
-        <Button>Agregar</Button>
+        <Button
+          onClick={() =>
+            openDialog({ title: "Agregar usuario" }, () => <UserFormDialog />)
+          }
+        >
+          Agregar
+        </Button>
       </div>
       <AppTableToolbar
         table={table}

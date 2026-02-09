@@ -11,12 +11,12 @@ interface DialogProps {
 interface DialogState {
   isOpen: boolean;
   // Renderer dinámico
+  props: DialogProps;
   renderer?: (props?: unknown) => ReactNode;
 
-  props: DialogProps;
   openDialog: <TProps>(
+    props: DialogProps,
     renderer: DialogRenderer<TProps>,
-    props?: DialogProps,
   ) => void;
   closeDialog: () => void;
 }
@@ -25,11 +25,11 @@ export const useDialogStore = create<DialogState>((set) => ({
   isOpen: false,
   renderer: undefined,
   props: {},
-  openDialog: (renderer, props) =>
+  openDialog: (props, renderer) =>
     set({
       isOpen: true,
-      renderer: renderer as (props?: unknown) => ReactNode,
       props,
+      renderer: renderer as (props?: unknown) => ReactNode,
     }),
   closeDialog: () => {
     set((state) => ({
@@ -38,8 +38,8 @@ export const useDialogStore = create<DialogState>((set) => ({
     }));
     setTimeout(() => {
       set({
-        renderer: undefined,
         props: undefined,
+        renderer: undefined,
       });
     }, 200);
   },

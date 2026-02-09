@@ -48,6 +48,6 @@ export const useCompanyStore = create<CompanyStore>()(
 
 export const getCompany = async () => {
   const state = useCompanyStore.getState();
-  const { data } = await api.get<CompanyProps>("company/actual");
+  const { data } = await api.get<CompanyProps>("companies/actual");
   state.setCompany(data);
 };

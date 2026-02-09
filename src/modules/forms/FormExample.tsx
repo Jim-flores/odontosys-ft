@@ -179,10 +179,10 @@ const FormExample = () => {
               type="button"
               onClick={() =>
                 openDialog(
-                  () => <DetailsForm form={form} onSubmit={onSubmit} />,
                   {
                     title: "Detalles del Formulario",
                   },
+                  () => <DetailsForm form={form} onSubmit={onSubmit} />,
                 )
               }
             >
