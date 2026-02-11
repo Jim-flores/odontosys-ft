@@ -1,4 +1,5 @@
 import api from "@/api/api";
+import { PaginationResponse } from "@/interfaces/PaginationType";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
@@ -35,6 +36,7 @@ export const useBranchStore = create<BranchesProps>()(
 
 export const getBranches = async () => {
   const state = useBranchStore.getState();
-  const { data } = await api.get<BranchesListProps[]>("branches/list");
-  state.setBranch(data);
+  const { data } =
+    await api.get<PaginationResponse<BranchesListProps>>("branches/list");
+  state.setBranch(data.rows);
 };
