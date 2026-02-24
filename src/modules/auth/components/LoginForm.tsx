@@ -25,6 +25,7 @@ import api from "@/api/api";
 import { getProfile } from "@/store/useProfileStore";
 import { useCompanyStore } from "@/store/useCompanyStore";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getBranches } from "@/store/useBranchStore";
 
 const LoginForm = ({
   className,
@@ -48,6 +49,7 @@ const LoginForm = ({
     const response = await api.post("auth/login", values);
     if (!response.data.token) return;
     getProfile();
+    getBranches();
     localStorage.setItem("token", response.data.token);
     navigate("/dashboard");
   }
