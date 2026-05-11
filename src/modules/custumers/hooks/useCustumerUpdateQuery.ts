@@ -1,31 +1,34 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { UserDTO } from "../interfaces/types";
-import UsersServices from "../services/users.service";
+import { CustumerDTO } from "../interfaces/types";
+import CustumersServices from "../services/custumers.service";
 import { PaginationResponse } from "@/interfaces/PaginationType";
-import { userConstantKey } from "../constants/userConstants";
+import { custumerConstantKey } from "../constants/custumerConstants";
 
 interface UpdateProps {
   id: string;
-  data: UserDTO;
+  data: CustumerDTO;
 }
 
-export const useUserUpdateQuery = () => {
+export const useCustumerUpdateQuery = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, data }: UpdateProps) => UsersServices.update(id, data),
+    mutationFn: ({ id, data }: UpdateProps) =>
+      CustumersServices.update(id, data),
 
     onMutate: async (updateRow) => {
       await queryClient.cancelQueries({
-        queryKey: [userConstantKey],
+        queryKey: [custumerConstantKey],
       });
 
-      const queries = queryClient.getQueriesData<PaginationResponse<UserDTO>>({
-        queryKey: [userConstantKey],
+      const queries = queryClient.getQueriesData<
+        PaginationResponse<CustumerDTO>
+      >({
+        queryKey: [custumerConstantKey],
       });
 
       queries.forEach(([key, previous]) => {
         if (!previous) return;
-        queryClient.setQueryData<PaginationResponse<UserDTO>>(key, {
+        queryClient.setQueryData<PaginationResponse<CustumerDTO>>(key, {
           ...previous,
           rows: previous.rows.map((row) =>
             row.id === updateRow.id ? { ...row, ...updateRow.data } : row,
@@ -41,7 +44,7 @@ export const useUserUpdateQuery = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [userConstantKey],
+        queryKey: [custumerConstantKey],
       });
     },
   });

@@ -53,7 +53,7 @@ const SelectFx = <T extends FieldValues, U>({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className={className}>
+        <FormItem className={cn("relative", className)}>
           {label && <FormLabel className="w-full truncate">{label}</FormLabel>}
           <FormControl>
             <Select

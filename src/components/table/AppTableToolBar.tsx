@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTableFacetedFilter } from "./faceted-filter";
 import { DataTableViewOptions } from "./view-options";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
+import type { FilterConfig } from "@/hooks/useServerTable";
 
 type AppTableToolbarProps<TData> = {
   table: Table<TData>;
@@ -20,6 +21,7 @@ type AppTableToolbarProps<TData> = {
     }[];
   }[];
   HeaderLeft?: ReactNode;
+  filterConfigs?: FilterConfig[];
 };
 
 const AppTableToolbar = <TData,>({
@@ -28,32 +30,46 @@ const AppTableToolbar = <TData,>({
   searchKey,
   filters = [],
   HeaderLeft,
+  filterConfigs = [],
 }: AppTableToolbarProps<TData>) => {
+  const searchConfig = searchKey
+    ? filterConfigs.find((filter) => filter.columnId === searchKey)
+    : undefined;
+  const canUseSearchInput = !searchConfig || searchConfig.type === "string";
+  const searchColumn = searchKey ? table.getColumn(searchKey) : undefined;
+
+  useEffect(() => {
+    if (import.meta.env.PROD) return;
+    if (searchConfig && searchConfig.type !== "string") {
+      console.warn(
+        `[AppTableToolbar] searchKey "${searchKey}" debe mapear a un filtro de tipo "string".`,
+      );
+    }
+  }, [searchConfig, searchKey]);
+
   const isFiltered =
     table.getState().columnFilters.length > 0 || table.getState().globalFilter;
 
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2">
-        {searchKey ? (
+        {searchKey && canUseSearchInput ? (
           <Input
             placeholder={searchPlaceholder}
-            value={
-              (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""
-            }
+            value={(searchColumn?.getFilterValue() as string) ?? ""}
             onChange={(event) =>
-              table.getColumn(searchKey)?.setFilterValue(event.target.value)
+              searchColumn?.setFilterValue(event.target.value)
             }
             className="h-8 w-[150px] lg:w-[250px]"
           />
-        ) : (
+        ) : !searchKey ? (
           <Input
             placeholder={searchPlaceholder}
             value={table.getState().globalFilter ?? ""}
             onChange={(event) => table.setGlobalFilter(event.target.value)}
             className="h-8 w-[150px] lg:w-[250px]"
           />
-        )}
+        ) : null}
         <div className="flex gap-x-2">
           {filters.map((filter) => {
             const column = table.getColumn(filter.columnId);

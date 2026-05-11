@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/sidebar";
 import { useProfileStore } from "@/store/useProfileStore";
 import { useBranchStore } from "@/store/useBranchStore";
+import { useAuthorizationStore } from "@/store/useAuthorizationStore";
 
 export function NavUser({
   user,
@@ -36,13 +37,16 @@ export function NavUser({
     avatar: string;
   };
 }) {
-  const { name, lastName, email } = useProfileStore();
+  const { name, lastName, email, clearUser } = useProfileStore();
   const { isMobile } = useSidebar();
   const { clearBranch } = useBranchStore();
+  const { clearAuthorization } = useAuthorizationStore();
   const deleteToken = () => {
     localStorage.removeItem("token");
     window.location.href = "/login";
     clearBranch();
+    clearAuthorization();
+    clearUser();
   };
   return (
     <SidebarMenu>

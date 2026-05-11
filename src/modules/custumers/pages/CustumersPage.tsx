@@ -5,39 +5,38 @@ import { Button } from "@/components/ui/button";
 import { Typography } from "@/components/ui/Typography";
 import { cn } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
-import { UserDTO } from "../interfaces/types";
+import { CustumerDTO } from "../interfaces/types";
 import { useMemo } from "react";
 import AppTableColumnHeader from "@/components/table/AppTableColumnHeader";
 import { useServerTable } from "@/hooks/useServerTable";
 import {
   formatStatus,
-  userConstantKey,
-  userStatus,
-} from "../constants/userConstants";
-import UsersServices from "../services/users.service";
+  custumerConstantKey,
+  custumerStatus,
+} from "../constants/custumerConstants";
+import CustumersServices from "../services/custumers.service";
 import { Pencil, Trash2 } from "lucide-react";
 import { useDialogStore } from "@/store/useDialogStore";
-import { UserFormDialog } from "../components/UsersFormDialog";
+import { CustumerFormDialog } from "../components/CustumerFormDialog";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog";
-import { useUserQuery } from "../hooks/useUserQuery";
+import { useCustumerQuery } from "../hooks/useCustumerQuery";
 import { useBranchStore } from "@/store/useBranchStore";
-import { useAuthorizationStore } from "@/store/useAuthorizationStore";
 
-const UsersPage = () => {
+const CustumersPage = () => {
   const { openDialog } = useDialogStore();
   const { branch } = useBranchStore();
-  const { roles } = useAuthorizationStore();
-  const { delete: deleteMutation } = useUserQuery();
-  const columns = useMemo<ColumnDef<UserDTO>[]>(() => {
+  const { delete: deleteMutation } = useCustumerQuery();
+
+  const columns = useMemo<ColumnDef<CustumerDTO>[]>(() => {
     return [
       {
-        id: "Usuarios",
+        id: "Clientes",
         accessorKey: "lastName",
         meta: {
-          label: "Usuarios", // Agrega una etiqueta personalizada para el nombre de la columna (vistas)
+          label: "Clientes",
         },
         header: ({ column }) => {
-          return <AppTableColumnHeader column={column} title="Usuarios" />;
+          return <AppTableColumnHeader column={column} title="Clientes" />;
         },
         cell: ({ row }) => (
           <div className="flex flex-col">
@@ -72,7 +71,6 @@ const UsersPage = () => {
         header: ({ column }) => {
           return <AppTableColumnHeader column={column} title="Sucursal" />;
         },
-
         cell: ({ row }) => (
           <div className="flex flex-col">
             <Typography variant="small">
@@ -122,22 +120,6 @@ const UsersPage = () => {
         enableHiding: true,
       },
       {
-        id: "Rol",
-        accessorKey: "roleId",
-        header: ({ column }) => {
-          return <AppTableColumnHeader column={column} title="Rol" />;
-        },
-        cell: ({ row }) => (
-          <div className="flex flex-col">
-            <Typography variant="small">
-              {roles.find((r) => r.id === row.original.roles)?.name || "N/A"}
-            </Typography>
-          </div>
-        ),
-        enableHiding: true,
-        enableSorting: false,
-      },
-      {
         id: "Acciones",
         accessorKey: "Acciones",
         header: ({ column }) => {
@@ -147,15 +129,15 @@ const UsersPage = () => {
           <div className="flex gap-2">
             <Button
               onClick={() =>
-                openDialog({ title: "Editar usuario" }, () => (
-                  <UserFormDialog data={row.original} />
+                openDialog({ title: "Editar cliente" }, () => (
+                  <CustumerFormDialog data={row.original} />
                 ))
               }
             >
               <Pencil />
             </Button>
             <ConfirmDialog
-              title="¿Eliminar usuario?"
+              title="¿Eliminar cliente?"
               onConfirm={() => deleteMutation.mutate(row.original.id)}
               trigger={
                 <Button variant="destructive">
@@ -168,15 +150,16 @@ const UsersPage = () => {
         enableHiding: true,
       },
     ];
-  }, []);
+  }, [branch, deleteMutation, openDialog]);
 
-  const [table, usersQuery] = useServerTable({
-    queryKey: [userConstantKey],
-    fetchData: UsersServices.getAll,
+  const [table, custumersQuery] = useServerTable({
+    queryKey: [custumerConstantKey],
+    fetchData: CustumersServices.getAll,
     columns: columns,
-    filterConfigs: UsersServices.usersTableFilterConfig,
+    filterConfigs: CustumersServices.custumersTableFilterConfig,
     initialPageSize: 10,
   });
+
   return (
     <div
       className={cn(
@@ -185,10 +168,12 @@ const UsersPage = () => {
       )}
     >
       <div className="flex justify-between items-center">
-        <Typography variant="h2">Lista de usuarios</Typography>
+        <Typography variant="h2">Lista de clientes</Typography>
         <Button
           onClick={() =>
-            openDialog({ title: "Agregar usuario" }, () => <UserFormDialog />)
+            openDialog({ title: "Agregar cliente" }, () => (
+              <CustumerFormDialog />
+            ))
           }
         >
           Agregar
@@ -197,14 +182,14 @@ const UsersPage = () => {
       <AppTableToolbar
         table={table}
         searchPlaceholder="Buscar por nombre o dni"
-        searchKey="Usuarios"
-        filterConfigs={UsersServices.usersTableFilterConfig}
+        searchKey="Clientes"
+        filterConfigs={CustumersServices.custumersTableFilterConfig}
         filters={[
           {
             columnId: "Estado",
             title: "Estado",
             options:
-              userStatus.map((status) => ({
+              custumerStatus.map((status) => ({
                 value: status.value,
                 label: status.name,
               })) ?? [],
@@ -213,10 +198,13 @@ const UsersPage = () => {
       />
       <AppTable
         table={table}
-        isGettingData={usersQuery.isPlaceholderData || usersQuery.isLoading}
+        isGettingData={
+          custumersQuery.isPlaceholderData || custumersQuery.isLoading
+        }
       />
-      <AppTablePagination table={table} isLoading={usersQuery.isFetching} />
+      <AppTablePagination table={table} isLoading={custumersQuery.isFetching} />
     </div>
   );
 };
-export default UsersPage;
+
+export default CustumersPage;

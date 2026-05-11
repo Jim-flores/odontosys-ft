@@ -41,7 +41,7 @@ const InputFx = <T extends FieldValues>({
       name={name}
       disabled={disabledController}
       render={({ field }) => (
-        <FormItem className={className}>
+        <FormItem className={cn("relative", className)}>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <div

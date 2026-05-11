@@ -44,7 +44,7 @@ export function FormWrapper<T extends FieldValues>({
               : (e) => e.preventDefault()
           }
           id={id}
-          className={`flex flex-col gap-4 ${className}`}
+          className={`flex flex-col gap-6 ${className}`}
         >
           {children}
         </form>

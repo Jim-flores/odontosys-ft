@@ -9,6 +9,7 @@ import FormExample from "@/modules/forms/FormExample";
 import WelcomePage from "@/layouts/dashboard/WelcomePage";
 import UsersPage from "@/modules/users/pages/UsersPage";
 import CompanyPage from "@/modules/company/pages/CompanyPage";
+import CustumersPage from "@/modules/custumers/pages/CustumersPage";
 
 const Router = () => {
   return (
@@ -33,6 +34,7 @@ const Router = () => {
             <Route path="tables" element={<TableExample />} />
             <Route path="forms" element={<FormExample />} />
             <Route path="users" element={<UsersPage />} />
+            <Route path="custumers" element={<CustumersPage />} />
             <Route path="company" element={<CompanyPage />} />
           </Route>
         </Route>

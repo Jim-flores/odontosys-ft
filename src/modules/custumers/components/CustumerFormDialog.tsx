@@ -1,54 +1,71 @@
 import { FormWrapper } from "@/components/customFormFields/FormWrapper";
 import { useBranchStore } from "@/store/useBranchStore";
+import { useProfileStore } from "@/store/useProfileStore";
 import { useForm } from "react-hook-form";
-import { UserDTO, UserRequestDTO } from "../interfaces/types";
+import { CustumerDTO, CustumerRequestDTO } from "../interfaces/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserRequestSchema, UserResponseSchema } from "../constants/userSchema";
-import { defaultUserAddValues, UserStatus } from "../constants/userConstants";
+import {
+  CustumerRequestSchema,
+  CustumerResponseSchema,
+} from "../constants/custumerSchema";
+import {
+  defaultCustumerAddValues,
+  CustumerStatusOptions,
+} from "../constants/custumerConstants";
 import InputFx from "@/components/customFormFields/InputFx";
 import SelectFx from "@/components/customFormFields/SelectFx";
 import { Button } from "@/components/ui/button";
-// import { MultiCheckboxFx } from "@/components/customFormFields/MultiCheckboxFx";
-import { useAuthorizationStore } from "@/store/useAuthorizationStore";
-import InputPasswordFx from "@/components/customFormFields/InputPasswordFx";
-import { useUserQuery } from "../hooks/useUserQuery";
+import { useCustumerQuery } from "../hooks/useCustumerQuery";
 import { useDialogStore } from "@/store/useDialogStore";
+import { useEffect } from "react";
+
 interface Props {
-  data?: UserDTO;
+  data?: CustumerDTO;
 }
-export const UserFormDialog = ({ data }: Props) => {
+
+export const CustumerFormDialog = ({ data }: Props) => {
   const { branch } = useBranchStore();
   const { closeDialog } = useDialogStore();
-  const { create, update } = useUserQuery();
-  const { roles } = useAuthorizationStore();
-  const addForm = useForm<UserRequestDTO>({
-    resolver: zodResolver(UserRequestSchema),
-    defaultValues: defaultUserAddValues,
-  });
-  const editForm = useForm<UserDTO>({
-    resolver: zodResolver(UserResponseSchema),
+  const { create, update } = useCustumerQuery();
+  const { id: profileId } = useProfileStore();
+
+  const addForm = useForm<CustumerRequestDTO>({
+    resolver: zodResolver(CustumerRequestSchema),
     defaultValues: {
-      ...data,
+      ...defaultCustumerAddValues,
+      userId: profileId,
     },
   });
-  // useEffect(() => {
-  //   if (!data?.id) return;
-  //   if (!branch.length || !roles.length) return;
-  //   editForm.reset({
-  //     ...data,
-  //   })
 
-  // }, [branch, roles])
+  const editForm = useForm<CustumerDTO>({
+    resolver: zodResolver(CustumerResponseSchema),
+    defaultValues: {
+      ...data,
+      userId: data?.userId || profileId,
+    },
+  });
 
-  const onSubmitAdd = async (values: UserRequestDTO) => {
+  useEffect(() => {
+    if (!profileId) return;
+    addForm.setValue("userId", profileId);
+    if (!data?.id) return;
+    editForm.reset({
+      ...data,
+      userId: data.userId || profileId,
+    });
+  }, [profileId, data]);
+
+  const onSubmitAdd = async (values: CustumerRequestDTO) => {
     create.mutate(values);
     closeDialog();
   };
-  const onSubmitEdit = async (values: UserDTO) => {
+
+  const onSubmitEdit = async (values: CustumerDTO) => {
     if (!data?.id) return;
     update.mutate({ id: data.id, data: values });
     closeDialog();
   };
+
   return data?.id ? (
     <FormWrapper form={editForm} onSubmit={onSubmitEdit}>
       <div className="row-space">
@@ -64,6 +81,9 @@ export const UserFormDialog = ({ data }: Props) => {
         <InputFx name="address" label="Dirección" />
       </div>
       <div className="row-space">
+        <InputFx name="notes" label="Notas" />
+      </div>
+      <div className="row-space">
         <SelectFx
           name="branchId"
           label="Sucursal"
@@ -72,18 +92,9 @@ export const UserFormDialog = ({ data }: Props) => {
           getValue={(e) => e.id}
         />
         <SelectFx
-          name="roles"
-          label="Rol"
-          options={roles}
-          getLabel={(e) => e.name}
-          getValue={(e) => e.id}
-        />
-      </div>
-      <div className="row-space">
-        <SelectFx
           name="status"
           label="Estado"
-          options={UserStatus}
+          options={CustumerStatusOptions}
           getLabel={(e) => e.name}
           getValue={(e) => e.value}
         />
@@ -93,12 +104,7 @@ export const UserFormDialog = ({ data }: Props) => {
       </Button>
     </FormWrapper>
   ) : (
-    <FormWrapper
-      form={addForm}
-      onSubmit={onSubmitAdd}
-      className="column-space"
-      onError={(e) => console.log(e)}
-    >
+    <FormWrapper form={addForm} onSubmit={onSubmitAdd} className="column-space">
       <div className="row-space">
         <InputFx name="name" label="Nombre" placeholder="Nombre" />
         <InputFx name="lastName" label="Apellido" placeholder="Apellido" />
@@ -112,17 +118,9 @@ export const UserFormDialog = ({ data }: Props) => {
         <InputFx name="address" label="Dirección" />
       </div>
       <div className="row-space">
-        <InputPasswordFx name="password" label="Contraseña" />
-        <InputPasswordFx name="confirmPassword" label="Confirmar contraseña" />
+        <InputFx name="notes" label="Notas" />
       </div>
       <div className="row-space">
-        {/* <SelectFx
-          name="status"
-          label="Estado"
-          options={UserStatus}
-          getLabel={(e) => e.name}
-          getValue={(e) => e.value}
-        /> */}
         <SelectFx
           name="branchId"
           label="Sucursal"
@@ -131,20 +129,13 @@ export const UserFormDialog = ({ data }: Props) => {
           getValue={(e) => e.id}
         />
         <SelectFx
-          name="roles"
-          label="Rol"
-          options={roles}
+          name="status"
+          label="Estado"
+          options={CustumerStatusOptions}
           getLabel={(e) => e.name}
-          getValue={(e) => e.id}
+          getValue={(e) => e.value}
         />
       </div>
-      {/*<MultiCheckboxFx
-          name="roles"
-          label="Roles"
-          options={roles}
-          getLabel={(e) => e.name}
-          getValue={(e) => e.id}
-        />*/}
       <Button className="w-24" type="submit">
         Guardar
       </Button>

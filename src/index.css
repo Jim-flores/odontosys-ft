@@ -3,7 +3,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -192,5 +191,11 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+  .row-space {
+    @apply flex gap-4 w-full;
+  }
+  .column-space {
+    @apply flex flex-col gap-2;
   }
 }

@@ -1,28 +1,28 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import UsersServices from "../services/users.service";
+import CustumersServices from "../services/custumers.service";
 import { PaginationResponse } from "@/interfaces/PaginationType";
-import { UserDTO } from "../interfaces/types";
-import { userConstantKey } from "../constants/userConstants";
+import { CustumerDTO } from "../interfaces/types";
+import { custumerConstantKey } from "../constants/custumerConstants";
 
-export const userUserDeletQuery = () => {
+export const useCustumerDeleteQuery = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) => UsersServices.remove(id),
+    mutationFn: (id: string) => CustumersServices.remove(id),
 
     onMutate: async (id) => {
       await queryClient.cancelQueries({
-        queryKey: [userConstantKey],
+        queryKey: [custumerConstantKey],
       });
 
       const [[fullKey, previous]]: Array<
-        [readonly unknown[], PaginationResponse<UserDTO> | undefined]
+        [readonly unknown[], PaginationResponse<CustumerDTO> | undefined]
       > = queryClient.getQueriesData({
-        queryKey: [userConstantKey],
+        queryKey: [custumerConstantKey],
       });
 
       if (previous) {
-        const newData: PaginationResponse<UserDTO> = {
+        const newData: PaginationResponse<CustumerDTO> = {
           ...previous,
           rows: previous.rows.filter((row) => row.id !== id),
           pagination: {
@@ -38,13 +38,13 @@ export const userUserDeletQuery = () => {
 
     onError: (_err, _vars, ctx) => {
       if (ctx?.previous) {
-        queryClient.setQueryData([userConstantKey], ctx.previous);
+        queryClient.setQueryData([custumerConstantKey], ctx.previous);
       }
     },
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [userConstantKey],
+        queryKey: [custumerConstantKey],
       });
     },
   });

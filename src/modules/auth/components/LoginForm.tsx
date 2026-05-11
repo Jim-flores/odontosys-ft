@@ -26,6 +26,7 @@ import { getProfile } from "@/store/useProfileStore";
 import { useCompanyStore } from "@/store/useCompanyStore";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getBranches } from "@/store/useBranchStore";
+import { getAuthorization } from "@/store/useAuthorizationStore";
 
 const LoginForm = ({
   className,
@@ -50,6 +51,7 @@ const LoginForm = ({
     if (!response.data.token) return;
     getProfile();
     getBranches();
+    getAuthorization();
     localStorage.setItem("token", response.data.token);
     navigate("/dashboard");
   }

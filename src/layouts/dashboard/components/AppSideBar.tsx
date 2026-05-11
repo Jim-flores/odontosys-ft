@@ -73,6 +73,11 @@ const data = {
           url: "/dashboard/users",
           icon: User2Icon,
         },
+        {
+          title: "Clientes",
+          url: "/dashboard/custumers",
+          icon: User2Icon,
+        },
       ],
     },
     {

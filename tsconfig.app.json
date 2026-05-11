@@ -23,7 +23,6 @@
     "noUncheckedSideEffectImports": true,
 
     /* Shadcn + Tailwind*/
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
