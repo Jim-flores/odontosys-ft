@@ -1,19 +1,29 @@
-import { Chart1 } from "./components/Chart1";
-import { Chart2 } from "./components/Chart2";
-import { Chart3 } from "./components/Chart3";
-import { Chart4 } from "./components/Chart4";
-
+import { Odontogram, OdontogramChange } from "odontogram-view";
+import { useState } from "react";
+const initialValue: OdontogramChange = [
+  {
+    tooth: "26",
+    surfaces: {
+      O: ["CARIES"],
+    },
+  },
+  {
+    tooth: "11",
+    conditions: ["CROWN"],
+  },
+];
 const Charts = () => {
+  const [data, setData] = useState<OdontogramChange>(initialValue);
   return (
-    <div className="flex flex-1 flex-col gap-4 pt-0">
-      <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-        <Chart1 />
-        <Chart2 />
-        <Chart3 />
-      </div>
-      <div className="bg-muted/50  flex-1 rounded-xl flex items-center">
-        <Chart4 />
-      </div>
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-auto pt-0">
+      <Odontogram
+        value={data}
+        onChange={(change) => {
+          setData(change);
+        }}
+        className="w-full"
+        size="xs"
+      />
     </div>
   );
 };
