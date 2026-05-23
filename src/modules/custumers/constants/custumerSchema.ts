@@ -9,8 +9,8 @@ export const CustumerResponseSchema = z.object({
   email: z.string(),
   phone: z.string(),
   dni: z.string(),
-  address: z.string().optional(),
-  notes: z.string().optional(),
+  currentAddress: z.string().optional(),
+  // notes: z.string().optional(),
   status: CustumerStatus,
   createdAt: z.string(),
   branchId: z.string(),
@@ -39,9 +39,10 @@ export const CustumerRequestSchema = z.object({
     .string()
     .length(9, "El teléfono debe tener 9 caracteres")
     .nonempty("El campo es obligario"),
-  address: z.string().optional(),
-  notes: z.string().optional(),
+  currentAddress: z.string().optional(),
+  // notes: z.string().optional(),
   status: CustumerStatus,
+  gender: z.enum(["MALE", "FEMALE"]),
   branchId: z.string().nonempty("Seleccione una sucursal"),
   userId: z.string().nonempty("El usuario es obligatorio"),
 });

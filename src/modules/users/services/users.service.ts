@@ -1,10 +1,10 @@
-import api from "@/api/api";
 import { PaginationResponse } from "@/interfaces/PaginationType";
 import { paginationMap } from "@/utils/paginationMap";
 import { UserDTO, UserRequestDTO } from "../interfaces/types";
 import { toast } from "sonner";
 import { FetchDataParams, FilterConfig } from "@/hooks/useServerTable";
 import { buildApiParams } from "@/utils/apiUtils";
+import { apiClient } from "@/utils/apiClient";
 
 class UsersServices {
   static usersTableFilterConfig: FilterConfig[] = [
@@ -18,9 +18,12 @@ class UsersServices {
       params,
       UsersServices.usersTableFilterConfig,
     );
-    const { data } = await api.get<PaginationResponse<UserDTO>>(`/users`, {
-      params: apiParams,
-    });
+    const { data } = await apiClient.get<PaginationResponse<UserDTO>>(
+      `/users`,
+      {
+        params: apiParams,
+      },
+    );
     return paginationMap(data, (user) => ({
       id: user.id,
       name: user.name,
@@ -40,8 +43,8 @@ class UsersServices {
     //eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { roles, confirmPassword, ...rest } = values;
     const newData = { ...rest, roles: [roles] };
-    const { data } = await api.post(`/users`, newData);
-    toast.success(data);
+    const { data, message } = await apiClient.post(`/users`, newData);
+    toast.success(message);
     return data;
   };
 
@@ -57,14 +60,14 @@ class UsersServices {
       branchId: values.branchId,
       roles: [values.roles],
     };
-    const { data } = await api.patch(`/users/${id}`, newData);
-    toast.success(data);
+    const { data, message } = await apiClient.patch(`/users/${id}`, newData);
+    toast.success(message);
     return data;
   };
 
   static remove = async (id: string) => {
-    const { data } = await api.delete(`/users/${id}`);
-    toast.success(data);
+    const { message } = await apiClient.delete(`/users/${id}`);
+    toast.success(message);
   };
 }
 export default UsersServices;

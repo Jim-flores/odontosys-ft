@@ -15,7 +15,7 @@ import {
   custumerStatus,
 } from "../constants/custumerConstants";
 import CustumersServices from "../services/custumers.service";
-import { Pencil, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { useDialogStore } from "@/store/useDialogStore";
 import { CustumerFormDialog } from "../components/CustumerFormDialog";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog";
@@ -127,15 +127,6 @@ const CustumersPage = () => {
         },
         cell: ({ row }) => (
           <div className="flex gap-2">
-            <Button
-              onClick={() =>
-                openDialog({ title: "Editar cliente" }, () => (
-                  <CustumerFormDialog data={row.original} />
-                ))
-              }
-            >
-              <Pencil />
-            </Button>
             <ConfirmDialog
               title="¿Eliminar cliente?"
               onConfirm={() => deleteMutation.mutate(row.original.id)}

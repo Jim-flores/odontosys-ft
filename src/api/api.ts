@@ -46,7 +46,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   async (res) => {
     hideLoader(res.config?.noLoader);
-    return res;
+    return res.data;
   },
   (err) => {
     hideLoader(err.config?.noLoader);

@@ -39,11 +39,11 @@ export const defaultCustumerAddValues: CustumerRequestDTO = {
   email: "",
   dni: "",
   phone: "",
-  address: "",
-  notes: "",
+  currentAddress: "",
   status: "ACTIVE",
   branchId: "",
   userId: "",
+  gender: "MALE",
 };
 
 export const CustumerStatusOptions = [
