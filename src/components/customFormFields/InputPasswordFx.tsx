@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { type FieldValues, type Path, useFormContext } from "react-hook-form";
 import {
   FormField,
@@ -9,11 +10,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Eye, EyeOff, Lock } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 
 interface InputPasswordProps<T extends FieldValues> {
   name: Path<T>;
   label?: string;
+  icon?: ReactNode;
   placeholder?: string;
   className?: string;
   inputClassName?: string;
@@ -22,6 +24,7 @@ interface InputPasswordProps<T extends FieldValues> {
 const InputPasswordFx = <T extends FieldValues>({
   name,
   label,
+  icon,
   placeholder = "123456",
   className = "",
   inputClassName = "",
@@ -37,18 +40,20 @@ const InputPasswordFx = <T extends FieldValues>({
           {label && <FormLabel className="text-foreground">{label}</FormLabel>}
           <FormControl>
             <div className="relative flex items-center">
-              <div className="absolute left-3 text-gray-500">
-                <Lock className="w-4 h-4" />
-              </div>
+              {icon && (
+                <div className="pointer-events-none absolute left-3 text-muted-foreground">
+                  {icon}
+                </div>
+              )}
               <Input
                 type={showPassword ? "text" : "password"}
                 placeholder={placeholder}
                 {...field}
-                className={cn("pl-10 pr-10", inputClassName)}
+                className={cn(icon ? "pl-10" : "pl-2", "pr-10", inputClassName)}
               />
               <button
                 type="button"
-                className="absolute right-3 text-gray-500"
+                className="absolute right-3 text-muted-foreground"
                 onClick={() => setShowPassword((prev) => !prev)}
               >
                 {showPassword ? (

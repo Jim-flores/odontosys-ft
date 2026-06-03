@@ -48,14 +48,16 @@ const InputFx = <T extends FieldValues>({
               className={`relative flex items-center w-full ${inputContainerClassName}`}
             >
               {icon && (
-                <div className="absolute left-3 text-gray-500">{icon}</div>
+                <div className="pointer-events-none absolute left-2 text-muted-foreground">
+                  {icon}
+                </div>
               )}
               <Input
                 placeholder={placeholder}
                 {...field}
                 value={field.value ?? ""}
                 {...props}
-                className={cn(`${icon ? "pl-10" : "pl-2"}`, inputClassName)}
+                className={cn(icon ? "pl-10" : "pl-2", inputClassName)}
               />
               {rightComponent}
             </div>
