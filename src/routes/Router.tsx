@@ -10,6 +10,9 @@ import WelcomePage from "@/layouts/dashboard/WelcomePage";
 import UsersPage from "@/modules/users/pages/UsersPage";
 import CompanyPage from "@/modules/company/pages/CompanyPage";
 import CustumersPage from "@/modules/custumers/pages/CustumersPage";
+import CustumerInformation from "@/modules/custumers/components/custumerInformation/CustumerInformation";
+import Information from "@/modules/custumers/components/custumerInformation/Information";
+import Odontogram from "@/modules/custumers/components/custumerInformation/Odontogram";
 
 const Router = () => {
   return (
@@ -35,6 +38,11 @@ const Router = () => {
             <Route path="forms" element={<FormExample />} />
             <Route path="users" element={<UsersPage />} />
             <Route path="custumers" element={<CustumersPage />} />
+            <Route path="custumers/:id" element={<CustumerInformation />}>
+              <Route index element={<Information />} />
+              <Route path="filiacion" element={<Information />} />
+              <Route path="odontograma" element={<Odontogram />} />
+            </Route>
             <Route path="company" element={<CompanyPage />} />
           </Route>
         </Route>

@@ -196,3 +196,10 @@ export const formatDateToIso = (date?: ConfigType) => {
   return dayjsSpanish(date).toISOString();
 };
 export default dayjsSpanish;
+
+// birthdate
+export const formatBirthdate = (date?: ConfigType) => {
+  if (!date) return "";
+
+  return dayjsSpanish.utc(date).format("YYYY-MM-DD");
+};
