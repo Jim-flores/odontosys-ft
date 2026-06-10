@@ -1,4 +1,4 @@
-import api from "@/api/api";
+import { apiClient } from "@/utils/apiClient";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
@@ -77,7 +77,7 @@ export const useProfileStore = create<UserProps>()(
 export const getProfile = async () => {
   try {
     const state = useProfileStore.getState();
-    const { data } = await api.get("/auth/profile");
+    const { data } = await apiClient.get<UserProps>("/auth/profile");
     state.setUser(data);
   } catch (error) {
     console.error("Error fetching user:", error);

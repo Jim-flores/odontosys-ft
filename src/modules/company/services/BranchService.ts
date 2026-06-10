@@ -1,4 +1,3 @@
-import api from "@/api/api";
 import { PaginationResponse } from "@/interfaces/PaginationType";
 import { paginationMap } from "@/utils/paginationMap";
 import { BranchSchema, BranchRequestSchema } from "../schema/branchSchema";
@@ -6,6 +5,7 @@ import { toast } from "sonner";
 import { FetchDataParams, FilterConfig } from "@/hooks/useServerTable";
 import { buildApiParams } from "@/utils/apiUtils";
 import { getBranches } from "@/store/useBranchStore";
+import { apiClient } from "@/utils/apiClient";
 
 class BranchService {
   static branchTableFilterConfig: FilterConfig[] = [
@@ -18,7 +18,7 @@ class BranchService {
       params,
       BranchService.branchTableFilterConfig,
     );
-    const { data } = await api.get<PaginationResponse<BranchSchema>>(
+    const { data } = await apiClient.get<PaginationResponse<BranchSchema>>(
       `/branches/list`,
       {
         params: apiParams,
@@ -34,21 +34,21 @@ class BranchService {
   };
 
   static create = async (values: BranchRequestSchema) => {
-    const { data } = await api.post(`/branches`, values);
+    const { data } = await apiClient.post(`/branches`, values);
     toast.success("Sucursal creada exitosamente");
     getBranches();
     return data;
   };
 
   static update = async (id: string, values: BranchRequestSchema) => {
-    const { data } = await api.patch(`/branches/${id}`, values);
+    const { data } = await apiClient.patch(`/branches/${id}`, values);
     toast.success("Sucursal actualizada exitosamente");
     getBranches();
     return data;
   };
 
   static remove = async (id: string) => {
-    const { data } = await api.delete(`/branches/${id}`);
+    const { data } = await apiClient.delete(`/branches/${id}`);
     toast.success("Sucursal eliminada exitosamente");
     getBranches();
     return data;

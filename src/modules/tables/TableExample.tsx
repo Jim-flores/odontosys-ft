@@ -109,10 +109,13 @@ const TableExample = () => {
               variant={"ghost"}
               className="text-primary cursor-pointer"
               onClick={() =>
-                openDialog(() => <ElementModal data={row.original} />, {
-                  title: "Editar usuario",
-                  width: 600,
-                })
+                openDialog(
+                  {
+                    title: "Editar usuario",
+                    width: 600,
+                  },
+                  () => <ElementModal data={row.original} />,
+                )
               }
             >
               <Pencil />
@@ -186,10 +189,13 @@ const TableExample = () => {
         <div className="flex items-center gap-2">
           <Button
             onClick={() =>
-              openDialog(() => <ElementModal />, {
-                title: "Editar usuario",
-                width: 600,
-              })
+              openDialog(
+                {
+                  title: "Editar usuario",
+                  width: 600,
+                },
+                () => <ElementModal />,
+              )
             }
           >
             <Plus />

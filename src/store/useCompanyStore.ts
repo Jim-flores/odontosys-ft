@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import api from "@/api/api";
+import { apiClient } from "@/utils/apiClient";
 
 interface CompanyStore {
   company: CompanyProps;
@@ -48,6 +48,6 @@ export const useCompanyStore = create<CompanyStore>()(
 
 export const getCompany = async () => {
   const state = useCompanyStore.getState();
-  const { data } = await api.get<CompanyProps>("companies/actual");
+  const { data } = await apiClient.get<CompanyProps>("/companies/actual");
   state.setCompany(data);
 };

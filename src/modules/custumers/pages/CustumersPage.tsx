@@ -15,18 +15,19 @@ import {
   custumerStatus,
 } from "../constants/custumerConstants";
 import CustumersServices from "../services/custumers.service";
-import { Trash2 } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 import { useDialogStore } from "@/store/useDialogStore";
 import { CustumerFormDialog } from "../components/CustumerFormDialog";
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog";
 import { useCustumerQuery } from "../hooks/useCustumerQuery";
 import { useBranchStore } from "@/store/useBranchStore";
+import { useNavigate } from "react-router";
 
 const CustumersPage = () => {
   const { openDialog } = useDialogStore();
   const { branch } = useBranchStore();
   const { delete: deleteMutation } = useCustumerQuery();
-
+  const Navigate = useNavigate();
   const columns = useMemo<ColumnDef<CustumerDTO>[]>(() => {
     return [
       {
@@ -127,6 +128,13 @@ const CustumersPage = () => {
         },
         cell: ({ row }) => (
           <div className="flex gap-2">
+            <Button
+              onClick={() => {
+                Navigate(`${row.original.id}`);
+              }}
+            >
+              <Eye />
+            </Button>
             <ConfirmDialog
               title="¿Eliminar cliente?"
               onConfirm={() => deleteMutation.mutate(row.original.id)}

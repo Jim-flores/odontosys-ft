@@ -13,6 +13,7 @@ import CustumersPage from "@/modules/custumers/pages/CustumersPage";
 import CustumerInformation from "@/modules/custumers/components/custumerInformation/CustumerInformation";
 import Information from "@/modules/custumers/components/custumerInformation/Information";
 import Odontogram from "@/modules/custumers/components/custumerInformation/Odontogram";
+import AppointmentsPage from "@/modules/appointments/pages/AppointmentsPage";
 
 const Router = () => {
   return (
@@ -37,6 +38,7 @@ const Router = () => {
             <Route path="tables" element={<TableExample />} />
             <Route path="forms" element={<FormExample />} />
             <Route path="users" element={<UsersPage />} />
+            <Route path="appointments" element={<AppointmentsPage />} />
             <Route path="custumers" element={<CustumersPage />} />
             <Route path="custumers/:id" element={<CustumerInformation />}>
               <Route index element={<Information />} />

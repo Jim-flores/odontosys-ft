@@ -9,7 +9,7 @@ import { type FieldValues, type Path, useFormContext } from "react-hook-form";
 
 interface MultiCheckboxFxProps<T extends FieldValues> {
   name: Path<T>;
-  value: string | number; // el value único del checkbox
+  value: string | number | boolean; // el value único del checkbox
   label: string;
   description?: string;
   className?: string;
@@ -29,7 +29,7 @@ export function MultiCheckboxFx<T extends FieldValues>({
       control={control}
       name={name}
       render={({ field }) => {
-        const selected: (string | number)[] = field.value || [];
+        const selected: (string | number | boolean)[] = field.value || [];
 
         const isChecked = selected.includes(value);
 
@@ -43,14 +43,14 @@ export function MultiCheckboxFx<T extends FieldValues>({
 
         return (
           <FormItem
-            className={`flex flex-col space-y-1 rounded-lg border p-3 ${className}`}
+            className={`flex flex-col space-y-1 rounded-lg p-3 ${className}`}
           >
-            <div className="flex space-x-3">
+            <div className="flex space-x-3 items-center">
               <FormControl>
                 <Checkbox checked={isChecked} onCheckedChange={toggle} />
               </FormControl>
 
-              <div>
+              <div className="flex flex-col">
                 <FormLabel className="text-base">{label}</FormLabel>
                 {description && (
                   <p className="text-sm text-muted-foreground">{description}</p>
