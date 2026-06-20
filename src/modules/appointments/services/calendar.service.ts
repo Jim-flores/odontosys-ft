@@ -1,16 +1,14 @@
 import { apiClient } from "@/utils/apiClient";
 import { CalendarEvent, CalendarQuery } from "../interfaces/types";
-interface Props {
-  days: CalendarQuery;
-}
+
 class CalendarServices {
-  static getCalendar = async ({ days }: Props) => {
+  static getCalendar = async ({ start, end }: CalendarQuery) => {
     const { data } = await apiClient.get<CalendarEvent[]>(
       "/appointments/calendar",
       {
         params: {
-          start: days.start.toISOString(),
-          end: days.end.toISOString(),
+          start: start.toISOString(),
+          end: end.toISOString(),
         },
       },
     );

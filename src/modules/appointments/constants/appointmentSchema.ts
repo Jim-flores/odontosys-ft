@@ -77,4 +77,6 @@ export const updateAppointmentSchema = z.object({
   clientId: z.string().uuid().optional(),
 
   userId: z.string().uuid().optional(),
+
+  branchId: z.string().uuid(),
 });
