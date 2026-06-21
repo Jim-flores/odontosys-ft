@@ -203,3 +203,8 @@ export const formatBirthdate = (date?: ConfigType) => {
 
   return dayjsSpanish.utc(date).format("YYYY-MM-DD");
 };
+
+export const formatCalendarUtc = (date?: ConfigType) => {
+  if (!date) return "";
+  return dayjsSpanish(date).format("YYYY-MM-DDTHH:mm");
+};
