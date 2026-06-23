@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { appointmentConstantKey } from "../constants/appointmentConstant";
 import { CreateAppointmentInput } from "../interfaces/types";
 import AppointmentsServices from "../services/appointments.service";
+import { invalidateAppointmentQueries } from "./useAppointmentQuery";
 
 export const useAppointmentCreateQuery = () => {
   const queryClient = useQueryClient();
@@ -11,9 +11,7 @@ export const useAppointmentCreateQuery = () => {
       AppointmentsServices.create(data),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [appointmentConstantKey],
-      });
+      invalidateAppointmentQueries(queryClient);
     },
   });
 };

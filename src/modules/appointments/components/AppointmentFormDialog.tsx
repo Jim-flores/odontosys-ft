@@ -24,7 +24,8 @@ import {
 } from "../interfaces/types";
 import { useAppointmentQuery } from "../hooks/useAppointmentQuery";
 import CustumersServices from "@/modules/custumers/services/custumers.service";
-import UsersServices from "@/modules/users/services/users.service";
+// import { useEffect } from "react";
+import { formatCalendarUtc } from "@/utils/dayjsSpanish";
 
 interface Props {
   data?: Appointment;
@@ -36,13 +37,6 @@ const listParams = {
   sorting: [],
 };
 
-const toDateTimeLocal = (value?: string | null) => {
-  if (!value) return "";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "";
-  return date.toISOString().slice(0, 16);
-};
-
 const toIsoDateTime = (value?: string) => {
   if (!value) return "";
   return new Date(value).toISOString();
@@ -50,7 +44,7 @@ const toIsoDateTime = (value?: string) => {
 
 export const AppointmentFormDialog = ({ data }: Props) => {
   const { closeDialog } = useDialogStore();
-  const { id: profileId } = useProfileStore();
+  const { id: profileId, branchId } = useProfileStore();
   const { create, update } = useAppointmentQuery();
 
   const clientsQuery = useQuery({
@@ -58,15 +52,13 @@ export const AppointmentFormDialog = ({ data }: Props) => {
     queryFn: () => CustumersServices.getAll(listParams),
   });
 
-  const usersQuery = useQuery({
-    queryKey: ["appointment-users-list"],
-    queryFn: () => UsersServices.getAll(listParams),
-  });
-
   const addForm = useForm<CreateAppointmentInput>({
     resolver: zodResolver(createAppointmentSchema),
     defaultValues: {
       ...defaultAppointmentAddValues,
+      startAt: data?.startAt ? formatCalendarUtc(data.startAt) : "",
+      endAt: data?.endAt ? formatCalendarUtc(data.endAt) : "",
+      branchId: branchId,
       userId: profileId,
     },
   });
@@ -78,10 +70,9 @@ export const AppointmentFormDialog = ({ data }: Props) => {
       status: data?.status,
       title: data?.title || "",
       notes: data?.notes || "",
-      startAt: toDateTimeLocal(data?.startAt),
-      endAt: toDateTimeLocal(data?.endAt),
+      startAt: formatCalendarUtc(data?.startAt),
+      endAt: formatCalendarUtc(data?.endAt),
       clientId: data?.clientId,
-      userId: data?.userId,
     },
   });
 
@@ -95,7 +86,7 @@ export const AppointmentFormDialog = ({ data }: Props) => {
   };
 
   const onSubmitEdit = (values: UpdateAppointmentInput) => {
-    if (!data?.id) return;
+    if (!data) return;
     update.mutate({
       id: data.id,
       data: {
@@ -108,7 +99,7 @@ export const AppointmentFormDialog = ({ data }: Props) => {
   };
 
   const clients = clientsQuery.data?.rows ?? [];
-  const users = usersQuery.data?.rows ?? [];
+  // const users = usersQuery.data?.rows ?? [];
 
   return data?.id ? (
     <FormWrapper
@@ -117,7 +108,11 @@ export const AppointmentFormDialog = ({ data }: Props) => {
       className="column-space"
     >
       <div className="row-space">
-        <InputFx name="title" label="Título" placeholder="Consulta inicial" />
+        <InputFx
+          name="title"
+          label="Tratamiento"
+          placeholder="Consulta inicial"
+        />
         <SelectFx
           name="appointmentType"
           label="Tipo"
@@ -138,13 +133,13 @@ export const AppointmentFormDialog = ({ data }: Props) => {
           getLabel={(e) => `${e.name} ${e.lastName}`}
           getValue={(e) => e.id}
         />
-        <SelectFx
+        {/* <SelectFx
           name="userId"
           label="Usuario"
           options={users}
           getLabel={(e) => `${e.name} ${e.lastName}`}
           getValue={(e) => e.id}
-        />
+        /> */}
       </div>
       <div className="row-space">
         <SelectFx
@@ -163,7 +158,11 @@ export const AppointmentFormDialog = ({ data }: Props) => {
   ) : (
     <FormWrapper form={addForm} onSubmit={onSubmitAdd} className="column-space">
       <div className="row-space">
-        <InputFx name="title" label="Título" placeholder="Consulta inicial" />
+        <InputFx
+          name="title"
+          label="Tratamiento"
+          placeholder="Consulta inicial"
+        />
         <SelectFx
           name="appointmentType"
           label="Tipo"
@@ -184,13 +183,13 @@ export const AppointmentFormDialog = ({ data }: Props) => {
           getLabel={(e) => `${e.name} ${e.lastName}`}
           getValue={(e) => e.id}
         />
-        <SelectFx
+        {/* <SelectFx
           name="userId"
           label="Usuario"
           options={users}
           getLabel={(e) => `${e.name} ${e.lastName}`}
           getValue={(e) => e.id}
-        />
+        /> */}
       </div>
       <TextAreaFx name="notes" label="Notas" placeholder="Notas de la cita" />
       <Button className="w-24" type="submit">

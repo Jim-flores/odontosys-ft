@@ -3,18 +3,20 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { appointmentConstantKey } from "../constants/appointmentConstant";
 import { Appointment, UpdateAppointmentInput } from "../interfaces/types";
 import AppointmentsServices from "../services/appointments.service";
+import { invalidateAppointmentQueries } from "./useAppointmentQuery";
 
 interface UpdateProps {
   id: string;
   data: UpdateAppointmentInput;
+  alert?: boolean;
 }
 
 export const useAppointmentUpdateQuery = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: UpdateProps) =>
-      AppointmentsServices.update(id, data),
+    mutationFn: ({ id, data, alert }: UpdateProps) =>
+      AppointmentsServices.update(id, data, alert),
 
     onMutate: async (updateRow) => {
       await queryClient.cancelQueries({
@@ -47,9 +49,7 @@ export const useAppointmentUpdateQuery = () => {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [appointmentConstantKey],
-      });
+      invalidateAppointmentQueries(queryClient);
     },
   });
 };

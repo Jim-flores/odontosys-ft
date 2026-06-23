@@ -10,7 +10,8 @@ import {
   GalleryVerticalEnd,
   Settings2,
   SquareTerminal,
-  User2Icon,
+  Stethoscope,
+  Users2,
 } from "lucide-react";
 
 import {
@@ -58,26 +59,19 @@ const data = {
       isActive: false,
       items: [
         {
-          title: "Charts",
+          title: "Estatísticas",
           url: "/dashboard/charts",
+          icon: SquareTerminal,
         },
         {
-          title: "Tablas",
-          url: "/dashboard/tables",
-        },
-        {
-          title: "Formulario",
-          url: "/dashboard/forms",
-        },
-        {
-          title: "Usuarios",
+          title: "Dentistas",
           url: "/dashboard/users",
-          icon: User2Icon,
+          icon: Stethoscope,
         },
         {
-          title: "Clientes",
+          title: "Pacientes",
           url: "/dashboard/custumers",
-          icon: User2Icon,
+          icon: Users2,
         },
         {
           title: "Citas",
@@ -109,7 +103,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
+              className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
               <a href="#">
                 <ArrowUpCircleIcon className="h-5 w-5" />

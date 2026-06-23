@@ -65,6 +65,15 @@ export const formatDateTimeUtc = (
   return validDate.format(`DD${separator}MM${separator}YYYY h:mm A`);
 };
 
+// Returns date in "15/05/2024 7:18 PM" format
+export const formatDateTime24h = (
+  date?: ConfigType,
+  separator: string = "/",
+) => {
+  const validDate = transformValidDate(date);
+  return validDate.format(`DD${separator}MM${separator}YYYY HH:mm A`);
+};
+
 // Returns date in "9/5/2024 7:18 PM" format
 export const formatDateNoZeroTimeUtc = (
   date?: ConfigType,

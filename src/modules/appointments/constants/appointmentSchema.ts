@@ -56,9 +56,11 @@ export const createAppointmentSchema = z.object({
 
   endAt: appointmentDateTimeInput,
 
-  clientId: z.string().uuid(),
+  clientId: z.string().uuid("Seleccione un cliente"),
 
   userId: z.string().uuid(),
+
+  branchId: z.string().uuid(),
 });
 
 export const updateAppointmentSchema = z.object({
@@ -74,9 +76,7 @@ export const updateAppointmentSchema = z.object({
 
   endAt: appointmentDateTimeInput.optional(),
 
-  clientId: z.string().uuid().optional(),
+  clientId: z.string().uuid("Seleccione un cliente").optional(),
 
   userId: z.string().uuid().optional(),
-
-  branchId: z.string().uuid(),
 });

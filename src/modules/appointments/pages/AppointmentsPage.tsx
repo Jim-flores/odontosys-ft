@@ -1,7 +1,5 @@
 import ConfirmDialog from "@/components/dialogs/ConfirmDialog";
-import AppTable from "@/components/table/AppTable";
 import AppTableColumnHeader from "@/components/table/AppTableColumnHeader";
-import { AppTablePagination } from "@/components/table/AppTablePagination";
 import AppTableToolbar from "@/components/table/AppTableToolBar";
 import { Button } from "@/components/ui/button";
 import { Typography } from "@/components/ui/Typography";
@@ -25,20 +23,16 @@ import {
 import { useAppointmentQuery } from "../hooks/useAppointmentQuery";
 import { Appointment } from "../interfaces/types";
 import AppointmentsServices from "../services/appointments.service";
+import Calendar from "../components/Calendar/Calendar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import AppTable from "@/components/table/AppTable";
+import { AppTablePagination } from "@/components/table/AppTablePagination";
+import { formatDateTime24h } from "@/utils/dayjsSpanish";
 
 const listParams = {
   pagination: { pageIndex: 0, pageSize: 100 },
   filters: [],
   sorting: [],
-};
-
-const formatDateTime = (value: string) => {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "N/A";
-  return new Intl.DateTimeFormat("es-PE", {
-    dateStyle: "short",
-    timeStyle: "short",
-  }).format(date);
 };
 
 const AppointmentsPage = () => {
@@ -75,9 +69,6 @@ const AppointmentsPage = () => {
               {row.original.title ||
                 formatAppointmentType(row.original.appointmentType)}
             </Typography>
-            <Typography variant="muted">
-              {formatAppointmentType(row.original.appointmentType) || "N/A"}
-            </Typography>
           </div>
         ),
         enableHiding: true,
@@ -102,23 +93,6 @@ const AppointmentsPage = () => {
         enableSorting: false,
       },
       {
-        id: "Usuario",
-        accessorKey: "userId",
-        header: ({ column }) => (
-          <AppTableColumnHeader column={column} title="Usuario" />
-        ),
-        cell: ({ row }) => {
-          const user = users.find((item) => item.id === row.original.userId);
-          return (
-            <Typography variant="small">
-              {user ? `${user.name} ${user.lastName}` : "N/A"}
-            </Typography>
-          );
-        },
-        enableHiding: true,
-        enableSorting: false,
-      },
-      {
         id: "Inicio",
         accessorKey: "startAt",
         header: ({ column }) => (
@@ -126,7 +100,7 @@ const AppointmentsPage = () => {
         ),
         cell: ({ row }) => (
           <Typography variant="small">
-            {formatDateTime(row.original.startAt)}
+            {formatDateTime24h(row.original.startAt)}
           </Typography>
         ),
         enableHiding: true,
@@ -139,7 +113,7 @@ const AppointmentsPage = () => {
         ),
         cell: ({ row }) => (
           <Typography variant="small">
-            {formatDateTime(row.original.endAt)}
+            {formatDateTime24h(row.original.endAt)}
           </Typography>
         ),
         enableHiding: true,
@@ -215,14 +189,19 @@ const AppointmentsPage = () => {
   });
 
   return (
-    <div
+    <Tabs
       className={cn(
         'max-sm:has-[div[role="toolbar"]]:mb-16',
-        "flex flex-1 flex-col gap-4 overflow-auto p-4",
+        "flex flex-1 flex-col gap-2 overflow-auto p-4",
       )}
+      defaultValue="calendar"
     >
       <div className="flex justify-between items-center">
-        <Typography variant="h2">Lista de citas</Typography>
+        <Typography variant="h3">Lista de citas</Typography>
+        <TabsList>
+          <TabsTrigger value="calendar">Calendario</TabsTrigger>
+          <TabsTrigger value="table">Tabla</TabsTrigger>
+        </TabsList>
         <Button
           onClick={() =>
             openDialog({ title: "Agregar cita" }, () => (
@@ -233,41 +212,46 @@ const AppointmentsPage = () => {
           Agregar
         </Button>
       </div>
-      <AppTableToolbar
-        table={table}
-        searchPlaceholder="Buscar por título"
-        searchKey="Citas"
-        filterConfigs={AppointmentsServices.appointmentsTableFilterConfig}
-        filters={[
-          {
-            columnId: "Estado",
-            title: "Estado",
-            options: appointmentStatus.map((status) => ({
-              value: status.value,
-              label: status.name,
-            })),
-          },
-          {
-            columnId: "Tipo",
-            title: "Tipo",
-            options: appointmentTypes.map((type) => ({
-              value: type.value,
-              label: type.name,
-            })),
-          },
-        ]}
-      />
-      <AppTable
-        table={table}
-        isGettingData={
-          appointmentsQuery.isPlaceholderData || appointmentsQuery.isLoading
-        }
-      />
-      <AppTablePagination
-        table={table}
-        isLoading={appointmentsQuery.isFetching}
-      />
-    </div>
+      <TabsContent value="table" className="flex flex-col flex-1 gap-4">
+        <AppTableToolbar
+          table={table}
+          searchPlaceholder="Buscar por cliente"
+          searchKey="Citas"
+          filterConfigs={AppointmentsServices.appointmentsTableFilterConfig}
+          filters={[
+            {
+              columnId: "Estado",
+              title: "Estado",
+              options: appointmentStatus.map((status) => ({
+                label: status.name,
+                value: status.value,
+              })),
+            },
+            {
+              columnId: "Tipo",
+              title: "Tipo",
+              options: appointmentTypes.map((type) => ({
+                label: type.name,
+                value: type.value,
+              })),
+            },
+          ]}
+        />
+        <AppTable
+          table={table}
+          isGettingData={
+            appointmentsQuery.isPlaceholderData || appointmentsQuery.isLoading
+          }
+        />
+        <AppTablePagination
+          table={table}
+          isLoading={appointmentsQuery.isFetching}
+        />
+      </TabsContent>
+      <TabsContent value="calendar">
+        <Calendar />
+      </TabsContent>
+    </Tabs>
   );
 };
 

@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { appointmentConstantKey } from "../constants/appointmentConstant";
 import { Appointment } from "../interfaces/types";
 import AppointmentsServices from "../services/appointments.service";
+import { invalidateAppointmentQueries } from "./useAppointmentQuery";
 
 export const useAppointmentDeleteQuery = () => {
   const queryClient = useQueryClient();
@@ -43,9 +44,7 @@ export const useAppointmentDeleteQuery = () => {
     },
 
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [appointmentConstantKey],
-      });
+      invalidateAppointmentQueries(queryClient);
     },
   });
 };

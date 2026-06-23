@@ -44,12 +44,16 @@ class AppointmentsServices {
     return data;
   };
 
-  static update = async (id: string, values: UpdateAppointmentInput) => {
+  static update = async (
+    id: string,
+    values: UpdateAppointmentInput,
+    alert: boolean = true,
+  ) => {
     const { data, message } = await apiClient.patch(
       `/appointments/${id}`,
       values,
     );
-    toast.success(message);
+    if (alert) toast.success(message);
     return data;
   };
 

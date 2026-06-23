@@ -4,8 +4,8 @@ import Login from "@/modules/auth/Login";
 import Layout from "@/layouts/dashboard/Layout";
 import NotFoundPage from "@/pages/NotFoundPage";
 import Charts from "@/modules/charts/Charts";
-import TableExample from "@/modules/tables/TableExample";
-import FormExample from "@/modules/forms/FormExample";
+// import TableExample from "@/modules/tables/TableExample";
+// import FormExample from "@/modules/forms/FormExample";
 import WelcomePage from "@/layouts/dashboard/WelcomePage";
 import UsersPage from "@/modules/users/pages/UsersPage";
 import CompanyPage from "@/modules/company/pages/CompanyPage";
@@ -35,8 +35,8 @@ const Router = () => {
           <Route path="/dashboard" element={<Layout />}>
             <Route path="" element={<WelcomePage />} />
             <Route path="charts" element={<Charts />} />
-            <Route path="tables" element={<TableExample />} />
-            <Route path="forms" element={<FormExample />} />
+            {/* <Route path="tables" element={<TableExample />} />
+            <Route path="forms" element={<FormExample />} /> */}
             <Route path="users" element={<UsersPage />} />
             <Route path="appointments" element={<AppointmentsPage />} />
             <Route path="custumers" element={<CustumersPage />} />
