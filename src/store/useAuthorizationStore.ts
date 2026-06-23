@@ -36,6 +36,7 @@ export const useAuthorizationStore = create<AuthorizationProps>()(
   ),
 );
 
+// Lista de todos los permisos
 export const getAuthorization = async () => {
   try {
     const state = useAuthorizationStore.getState();

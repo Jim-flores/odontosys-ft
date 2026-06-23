@@ -45,7 +45,7 @@ export const useCompanyStore = create<CompanyStore>()(
     },
   ),
 );
-
+// Datos de la compañía actual
 export const getCompany = async () => {
   const state = useCompanyStore.getState();
   const { data } = await apiClient.get<CompanyProps>("/companies/actual");

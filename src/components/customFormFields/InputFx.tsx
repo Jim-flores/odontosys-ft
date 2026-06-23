@@ -45,10 +45,10 @@ const InputFx = <T extends FieldValues>({
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
             <div
-              className={`relative flex items-center w-full ${inputContainerClassName}`}
+              className={`relative flex items-center ${inputContainerClassName}`}
             >
               {icon && (
-                <div className="pointer-events-none absolute left-2 text-muted-foreground">
+                <div className="pointer-events-none absolute left-3 text-muted-foreground">
                   {icon}
                 </div>
               )}

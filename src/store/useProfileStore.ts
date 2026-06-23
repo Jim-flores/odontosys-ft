@@ -26,6 +26,11 @@ export const useProfileStore = create<UserProps>()(
       email: "",
       status: "",
       createdAt: "",
+      branchId: "",
+      branch: {
+        id: "",
+        name: "",
+      },
       permissions: [],
       roles: [],
       hasHydrated: false,
@@ -38,6 +43,8 @@ export const useProfileStore = create<UserProps>()(
         createdAt,
         permissions,
         status,
+        branchId,
+        branch,
       }: ProfileProps) =>
         set({
           id,
@@ -48,6 +55,8 @@ export const useProfileStore = create<UserProps>()(
           createdAt,
           permissions,
           status,
+          branchId,
+          branch,
         }),
       clearUser: () => {
         set({
@@ -57,6 +66,11 @@ export const useProfileStore = create<UserProps>()(
           email: "",
           status: "",
           createdAt: "",
+          branchId: "",
+          branch: {
+            id: "",
+            name: "",
+          },
           permissions: [],
           roles: [],
         });

@@ -33,7 +33,7 @@ export const useBranchStore = create<BranchesProps>()(
     },
   ),
 );
-
+// List de todas las sucursales
 export const getBranches = async () => {
   const state = useBranchStore.getState();
   const { data } =

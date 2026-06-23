@@ -6,17 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+
 import { cn } from "@/lib/utils";
-import { Label } from "@radix-ui/react-label";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,6 +18,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getBranches } from "@/store/useBranchStore";
 import { getAuthorization } from "@/store/useAuthorizationStore";
 import { apiClient } from "@/utils/apiClient";
+import { FormWrapper } from "@/components/customFormFields/FormWrapper";
+import InputFx from "@/components/customFormFields/InputFx";
+import InputPasswordFx from "@/components/customFormFields/InputPasswordFx";
+import { Lock, Mail } from "lucide-react";
 
 const LoginForm = ({
   className,
@@ -79,67 +74,23 @@ const LoginForm = ({
                 Or continue with
               </span>
             </div>
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="grid gap-6"
-              >
-                <div className="grid gap-2">
-                  {/* <Label htmlFor="email">Email</Label> */}
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder="email@gmail.com" {...field} />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  {/* <Input
-                    id="email"
-                    type="email"
-                    placeholder="m@example.com"
-                    required
-                  /> */}
-                </div>
-                <div className="grid gap-2">
-                  <div className="flex items-center">
-                    <Label htmlFor="password">Password</Label>
-                    <a
-                      href="#"
-                      className="ml-auto text-sm underline-offset-4 hover:underline"
-                    >
-                      Forgot your password?
-                    </a>
-                  </div>
-                  <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="******"
-                            {...field}
-                          />
-                        </FormControl>
-
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <Button type="submit" className="w-full">
-                  Login
-                </Button>
-              </form>
-            </Form>
+            <FormWrapper form={form} onSubmit={onSubmit} className="grid gap-6">
+              <InputFx
+                icon={<Mail size={20} />}
+                name="email"
+                label="Email"
+                placeholder="email@gmail.com"
+              />
+              <InputPasswordFx
+                icon={<Lock size={20} />}
+                name="password"
+                label="Password"
+                placeholder="******"
+              />
+              <Button type="submit" className="w-full">
+                Login
+              </Button>
+            </FormWrapper>
             <div className="text-center text-sm">
               Don&apos;t have an account?{" "}
               <a href="#" className="underline underline-offset-4">
