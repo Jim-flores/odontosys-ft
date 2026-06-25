@@ -24,6 +24,7 @@ export type CalendarEvent = {
   end: Date;
   extendedProps?: {
     status: AppointmentStatus;
+    treatment: string;
     appointmentType: AppointmentType;
     clientId: string;
     userId: string;

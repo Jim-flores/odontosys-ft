@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useCalendarQuery } from "../../hooks/useCalendarQuery";
 import { useDialogStore } from "@/store/useDialogStore";
 import { AppointmentFormDialog } from "../AppointmentFormDialog";
-import { EventDropArg } from "@fullcalendar/core/index.js";
+import { EventContentArg, EventDropArg } from "@fullcalendar/core/index.js";
 import { useAppointmentQuery } from "../../hooks/useAppointmentQuery";
 
 export default function Calendar() {
@@ -35,6 +35,26 @@ export default function Calendar() {
       },
       alert: false,
     });
+  };
+  const renderEventContent = (info: EventContentArg) => {
+    const { event, timeText } = info;
+
+    const start = event.start;
+    const end = event.end;
+
+    const duration =
+      start && end ? (end.getTime() - start.getTime()) / (1000 * 60) : 0;
+
+    const isCompact = duration <= 30;
+    return (
+      <div>
+        <div className="flex items-center gap-1">
+          <b>{timeText}</b>
+          <span className="nowrap">- {event.title}</span>
+        </div>
+        {!isCompact && <div>{event.extendedProps.treatment}</div>}
+      </div>
+    );
   };
   return (
     <FullCalendar
@@ -88,6 +108,7 @@ export default function Calendar() {
       events={calendarQuery.data || []}
       eventResize={handleEventMove}
       eventDrop={handleEventMove}
+      eventContent={renderEventContent}
     />
   );
 }
