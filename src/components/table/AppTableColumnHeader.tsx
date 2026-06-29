@@ -26,30 +26,37 @@ const AppTableColumnHeader = <TData, TValue>({
   title,
   className,
 }: DataTableColumnHeaderProps<TData, TValue>) => {
+  const align = column.columnDef.meta?.align ?? "center";
+  const alignClassName = {
+    left: "justify-start text-left",
+    center: "justify-center text-center",
+    right: "justify-end text-right",
+  }[align];
+
   if (!column.getCanSort()) {
-    return <div className={cn(className)}>{title}</div>;
+    return <div className={cn(alignClassName, className)}>{title}</div>;
   }
 
   return (
-    <div className={cn("flex items-center space-x-2", className)}>
+    <div className={cn("flex items-center gap-2", alignClassName, className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             size="sm"
-            className="data-[state=open]:bg-accent h-8"
+            className="data-[state=open]:bg-accent h-8 justify-center px-2"
           >
             <span>{title}</span>
             {column.getIsSorted() === "desc" ? (
-              <ArrowDownIcon className="ms-2 h-4 w-4" />
+              <ArrowDownIcon className="ms-1.5 size-4" />
             ) : column.getIsSorted() === "asc" ? (
-              <ArrowUpIcon className="ms-2 h-4 w-4" />
+              <ArrowUpIcon className="ms-1.5 size-4" />
             ) : (
-              <CaretSortIcon className="ms-2 h-4 w-4" />
+              <CaretSortIcon className="ms-1.5 size-4" />
             )}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start">
+        <DropdownMenuContent align="center">
           <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
             <ArrowUpIcon className="text-muted-foreground/70 size-3.5" />
             Asc

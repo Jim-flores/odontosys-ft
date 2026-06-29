@@ -34,7 +34,7 @@ export function AppTablePagination<TData>({
   return (
     <div
       className={cn(
-        "flex items-center justify-between overflow-clip px-2",
+        "flex items-center justify-between gap-3 overflow-clip px-2",
         "@max-2xl/content:flex-col-reverse @max-2xl/content:gap-4",
         className,
       )}
@@ -65,17 +65,21 @@ export function AppTablePagination<TData>({
         </div>
       </div>
 
-      <div className="flex items-center sm:space-x-6 lg:space-x-8">
-        {isLoading && <div className="animate-pulse">Cargando...</div>}
+      <div className="flex items-center gap-3 sm:gap-6 lg:gap-8">
+        {isLoading && (
+          <div className="text-muted-foreground animate-pulse text-sm">
+            Cargando...
+          </div>
+        )}
         <div className="flex w-[100px] items-center justify-center text-sm font-medium @max-3xl/content:hidden">
           Pagina {currentPage} de {totalPages}
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2">
           <Button
             variant="outline"
             className="size-8 p-0 @max-md/content:hidden"
             onClick={() => table.setPageIndex(0)}
-            disabled={!table.getCanPreviousPage}
+            disabled={!table.getCanPreviousPage()}
           >
             <span className="sr-only">Ir a la primera pagina</span>
             <DoubleArrowLeftIcon className="h-4 w-4" />
@@ -90,7 +94,6 @@ export function AppTablePagination<TData>({
             <ChevronLeftIcon className="h-4 w-4" />
           </Button>
 
-          {/* Page number buttons */}
           {pageNumbers.map((pageNumber, index) => (
             <div key={`${pageNumber}-${index}`} className="flex items-center">
               {pageNumber === "..." ? (

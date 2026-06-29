@@ -51,8 +51,8 @@ const AppTableToolbar = <TData,>({
     table.getState().columnFilters.length > 0 || table.getState().globalFilter;
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex flex-1 flex-col-reverse items-start gap-y-2 sm:flex-row sm:items-center sm:space-x-2">
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-1 flex-col-reverse items-start gap-2 sm:flex-row sm:items-center">
         {searchKey && canUseSearchInput ? (
           <Input
             placeholder={searchPlaceholder}
@@ -70,7 +70,7 @@ const AppTableToolbar = <TData,>({
             className="h-8 w-[150px] lg:w-[250px]"
           />
         ) : null}
-        <div className="flex gap-x-2">
+        <div className="flex flex-wrap gap-2">
           {filters.map((filter) => {
             const column = table.getColumn(filter.columnId);
             if (!column) return null;
@@ -98,7 +98,7 @@ const AppTableToolbar = <TData,>({
           </Button>
         )}
       </div>
-      <div className="flex gap-2 items-center">
+      <div className="flex items-center justify-end gap-2">
         {HeaderLeft}
         <DataTableViewOptions table={table} />
       </div>
