@@ -38,6 +38,11 @@ class AppointmentsServices {
     }));
   };
 
+  static findOne = async (id: string) => {
+    const { data } = await apiClient.get<Appointment>(`/appointments/${id}`);
+    return data;
+  };
+
   static create = async (values: CreateAppointmentInput) => {
     const { data, message } = await apiClient.post("/appointments", values);
     toast.success(message);

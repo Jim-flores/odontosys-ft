@@ -31,9 +31,26 @@ const UsersPage = () => {
   const columns = useMemo<ColumnDef<UserDTO>[]>(() => {
     return [
       {
+        id: "#",
+        header: ({ column }) => (
+          <AppTableColumnHeader column={column} title="N°" />
+        ),
+        meta: {
+          label: "N°",
+          className: "text-center",
+        },
+        cell: ({ row }) => (
+          <div className="flex justify-center">
+            <Typography variant="small">{row.index + 1}</Typography>
+          </div>
+        ),
+        enableHiding: false,
+      },
+      {
         id: "Usuarios",
         accessorKey: "lastName",
         meta: {
+          align: "left",
           label: "Usuarios", // Agrega una etiqueta personalizada para el nombre de la columna (vistas)
         },
         header: ({ column }) => {

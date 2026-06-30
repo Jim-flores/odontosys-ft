@@ -31,10 +31,27 @@ const CustumersPage = () => {
   const columns = useMemo<ColumnDef<CustumerDTO>[]>(() => {
     return [
       {
+        id: "#",
+        header: ({ column }) => (
+          <AppTableColumnHeader column={column} title="N°" />
+        ),
+        meta: {
+          label: "N°",
+          className: "text-center",
+        },
+        cell: ({ row }) => (
+          <div className="flex justify-center">
+            <Typography variant="small">{row.index + 1}</Typography>
+          </div>
+        ),
+        enableHiding: false,
+      },
+      {
         id: "Clientes",
         accessorKey: "lastName",
         meta: {
           label: "Clientes",
+          align: "left",
         },
         header: ({ column }) => {
           return <AppTableColumnHeader column={column} title="Clientes" />;

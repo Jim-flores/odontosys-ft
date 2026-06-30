@@ -9,19 +9,36 @@ import { useState } from "react";
 import { useCalendarQuery } from "../../hooks/useCalendarQuery";
 import { useDialogStore } from "@/store/useDialogStore";
 import { AppointmentFormDialog } from "../AppointmentFormDialog";
-import { EventContentArg, EventDropArg } from "@fullcalendar/core/index.js";
+import {
+  EventClickArg,
+  EventContentArg,
+  EventDropArg,
+} from "@fullcalendar/core/index.js";
+import { getAppointmentDetailQueryOptions } from "../../hooks/useDetailEventQuery";
 import { useAppointmentQuery } from "../../hooks/useAppointmentQuery";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function Calendar() {
   const { openDialog } = useDialogStore();
+
   const { update } = useAppointmentQuery();
-  const handleEventClick = (info: { event: { title: string } }) => {
-    alert(`Evento: ${info.event.title}`);
-  };
   const [range, setRange] = useState({
     start: "",
     end: "",
   });
+
+  const queryClient = useQueryClient();
+
+  const handleEventClick = async (info: EventClickArg) => {
+    const data = await queryClient.ensureQueryData(
+      getAppointmentDetailQueryOptions(info.event.id),
+    );
+
+    openDialog({ title: "Editar cita" }, () => (
+      <AppointmentFormDialog data={data} />
+    ));
+  };
+
   const calendarQuery = useCalendarQuery(
     new Date(range.start),
     new Date(range.end),
@@ -50,7 +67,7 @@ export default function Calendar() {
       <div>
         <div className="flex items-center gap-1">
           <b>{timeText}</b>
-          <span className="nowrap">- {event.title}</span>
+          <span className="nowrap">{event.title}</span>
         </div>
         {!isCompact && <div>{event.extendedProps.treatment}</div>}
       </div>
