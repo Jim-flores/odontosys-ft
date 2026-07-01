@@ -1,0 +1,67 @@
+/* fullcalendar.css */
+
+/* Contenedor */
+.fc {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Cabecera de los días */
+.fc-col-header-cell {
+  background-color: var(--card);
+  border-color: var(--border);
+}
+
+.fc-col-header-cell-cushion {
+  color: var(--muted-foreground);
+  font-weight: 500;
+  padding: .75rem 0;
+}
+
+/* Columna de las horas */
+.fc-timegrid-axis {
+  background-color: var(--card);
+  color: var(--muted-foreground);
+}
+
+/* Líneas de la grilla */
+.fc-theme-standard td,
+.fc-theme-standard th,
+.fc-scrollgrid {
+  border-color: var(--border);
+}
+
+/* Día actual */
+.fc .fc-day-today {
+  background-color: color-mix(in srgb, var(--primary) 8%, transparent);
+}
+
+/* Hover sobre una celda */
+.fc-timegrid-slot:hover {
+  background-color: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* Eventos
+.fc-event {
+  background-color: var(--primary);
+  border: none;
+  border-radius: .5rem;
+  box-shadow: 0 4px 12px rgb(0 0 0 / .2);
+}
+
+.fc-event-main {
+  padding: .35rem;
+  font-size: .75rem;
+  font-weight: 500; 
+  color: var(--primary-foreground);
+} */
+
+/* Hora */
+.fc-timegrid-slot-label {
+  color: var(--muted-foreground);
+}
+
+/* Separador de la hora */
+.fc-timegrid-slot {
+  border-color: var(--border);
+}

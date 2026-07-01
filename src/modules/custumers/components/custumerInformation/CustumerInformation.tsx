@@ -18,9 +18,9 @@ const CustumerInformation = () => {
   if (error) return <p>Error al obtener cliente</p>;
   return (
     <section className="flex h-[calc(100vh-8rem)] min-h-0 w-full flex-col gap-2">
-      <div className="flex flex-col">
-        <Typography variant="large">
-          Informacion del cliente{" "}
+      <div className="flex items-center gap-2">
+        Información del cliente
+        <Typography variant="large" className="uppercase">
           {customer?.information?.name + " " + customer?.information?.lastName}
         </Typography>
       </div>

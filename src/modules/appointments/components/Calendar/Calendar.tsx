@@ -14,6 +14,7 @@ import {
   EventContentArg,
   EventDropArg,
 } from "@fullcalendar/core/index.js";
+import "../../../../fullcalendar.css";
 import { getAppointmentDetailQueryOptions } from "../../hooks/useDetailEventQuery";
 import { useAppointmentQuery } from "../../hooks/useAppointmentQuery";
 import { useQueryClient } from "@tanstack/react-query";
