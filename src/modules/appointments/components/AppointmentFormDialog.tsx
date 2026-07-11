@@ -58,7 +58,7 @@ export const AppointmentFormDialog = ({ data }: Props) => {
       ...defaultAppointmentAddValues,
       startAt: data?.startAt ? formatCalendarUtc(data.startAt) : "",
       endAt: data?.endAt ? formatCalendarUtc(data.endAt) : "",
-      branches: branches.map((b) => b.id),
+      branchId: branches[0]?.id,
       userId: profileId,
     },
   });

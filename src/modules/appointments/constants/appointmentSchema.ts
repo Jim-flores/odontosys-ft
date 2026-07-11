@@ -60,9 +60,7 @@ export const createAppointmentSchema = z.object({
 
   userId: z.string().uuid(),
 
-  branches: z
-    .array(z.string().uuid())
-    .min(1, "Seleccione al menos una sucursal"),
+  branchId: z.string().uuid(),
 });
 
 export const updateAppointmentSchema = z.object({
