@@ -11,7 +11,12 @@ export const UserResponseSchema = z.object({
   address: z.string().optional(),
   status: UserStatus,
   createdAt: z.string(),
-  branchId: z.string(),
+  branches: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+    }),
+  ),
   // solo el primer rol del usuario
   roles: z.string(),
 });
@@ -52,12 +57,7 @@ export const UserRequestSchema = z
       .string()
       .min(6, "Minimo 6 caracteres")
       .nonempty("El campo es obligatorio"),
-    branchId: z
-      .string()
-      .nonempty("Seleccione una sucursal")
-      .refine((val) => val !== "null", {
-        message: "Debe seleccionar una opción",
-      }),
+    branches: z.array(z.string()).optional(),
     roles: z
       .string()
       .nonempty("Seleccione un rol")

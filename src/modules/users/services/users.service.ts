@@ -34,7 +34,7 @@ class UsersServices {
       email: user.email,
       status: user.status,
       createdAt: user.createdAt,
-      branchId: user.branchId,
+      branches: user.branches,
       roles: user.roles,
     }));
   };
@@ -57,7 +57,7 @@ class UsersServices {
       phone: values.phone,
       address: values.address,
       status: values.status,
-      branchId: values.branchId,
+      branches: values.branches,
       roles: [values.roles],
     };
     const { data, message } = await apiClient.patch(`/users/${id}`, newData);

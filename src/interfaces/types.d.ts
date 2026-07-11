@@ -13,11 +13,10 @@ interface ProfileProps {
   email: string;
   status: string;
   createdAt: string;
-  branchId: string;
-  branch: {
+  branches: {
     id: string;
     name: string;
-  };
+  }[];
   roles: RolesProps[];
   permissions: PermissionsProps[];
 }

@@ -93,7 +93,7 @@ const UsersPage = () => {
         cell: ({ row }) => (
           <div className="flex flex-col">
             <Typography variant="small">
-              {branch.find((b) => b.id === row.original.branchId)?.name ||
+              {branch.find((b) => b.id === row.original.branches[0].id)?.name ||
                 "N/A"}
             </Typography>
           </div>

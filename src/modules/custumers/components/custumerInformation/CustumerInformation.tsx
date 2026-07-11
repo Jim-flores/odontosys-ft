@@ -7,6 +7,7 @@ import Antecedent from "./Antecedent";
 import { useParams } from "react-router";
 import { useCustumerInfoQuery } from "../../hooks/useCustumerInfoQuery";
 import { Typography } from "@/components/ui/Typography";
+import Treatment from "./Treatment";
 
 const CustumerInformation = () => {
   const { id } = useParams();
@@ -19,7 +20,7 @@ const CustumerInformation = () => {
   return (
     <section className="flex h-[calc(100vh-8rem)] min-h-0 w-full flex-col gap-2">
       <div className="flex items-center gap-2">
-        Información del cliente
+        Historial Clinico de:{" "}
         <Typography variant="large" className="uppercase">
           {customer?.information?.name + " " + customer?.information?.lastName}
         </Typography>
@@ -29,7 +30,7 @@ const CustumerInformation = () => {
         defaultValue="information"
         className="flex min-h-0 w-full flex-1 flex-col gap-4 h-full"
       >
-        <TabsList className="grid h-auto w-full grid-cols-1 gap-2 rounded-xl bg-muted/60 p-2 sm:grid-cols-3">
+        <TabsList className="grid h-auto w-full grid-cols-1 gap-2 rounded-xl bg-muted/60 p-2 sm:grid-cols-4">
           <TabsTrigger
             value="information"
             className="flex h-auto items-start justify-start gap-3 rounded-lg px-4 py-3 text-left hover:cursor-pointer"
@@ -58,6 +59,15 @@ const CustumerInformation = () => {
               <span className="text-sm font-semibold">Odontograma</span>
             </span>
           </TabsTrigger>
+          <TabsTrigger
+            value="treatment"
+            className="flex h-auto items-start justify-start gap-3 rounded-lg px-4 py-3 text-left hover:cursor-pointer"
+          >
+            <Stethoscope data-icon="inline-start" />
+            <span className="flex flex-col gap-1">
+              <span className="text-sm font-semibold">Procedimiento</span>
+            </span>
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="information" className="min-h-0 flex-1">
@@ -75,6 +85,11 @@ const CustumerInformation = () => {
         <TabsContent value="odontogram" className="min-h-0 flex-1">
           <ScrollArea className="h-full px-2">
             <Odontogram data={customer?.odontogram} />
+          </ScrollArea>
+        </TabsContent>
+        <TabsContent value="treatment" className="min-h-0 flex-1">
+          <ScrollArea className="h-full px-2">
+            <Treatment />
           </ScrollArea>
         </TabsContent>
       </Tabs>

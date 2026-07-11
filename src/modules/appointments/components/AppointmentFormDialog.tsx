@@ -44,7 +44,7 @@ const toIsoDateTime = (value?: string) => {
 
 export const AppointmentFormDialog = ({ data }: Props) => {
   const { closeDialog } = useDialogStore();
-  const { id: profileId, branchId } = useProfileStore();
+  const { id: profileId, branches } = useProfileStore();
   const { create, update } = useAppointmentQuery();
 
   const clientsQuery = useQuery({
@@ -58,7 +58,7 @@ export const AppointmentFormDialog = ({ data }: Props) => {
       ...defaultAppointmentAddValues,
       startAt: data?.startAt ? formatCalendarUtc(data.startAt) : "",
       endAt: data?.endAt ? formatCalendarUtc(data.endAt) : "",
-      branchId: branchId,
+      branches: branches.map((b) => b.id),
       userId: profileId,
     },
   });

@@ -1,0 +1,35 @@
+# Dependencias locales
+node_modules
+
+# Builds y caches locales
+dist
+.vite
+.cache
+coverage
+
+# Archivos de control de versiones y hooks locales
+.git
+.gitignore
+.husky
+
+# Variables de entorno y secretos locales
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Archivos de sistema/editor
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+
+# Archivos temporales
+*.swp
+*.swo
+*.tmp

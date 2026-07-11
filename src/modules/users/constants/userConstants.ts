@@ -40,7 +40,7 @@ export const defaultUserAddValues: UserRequestDTO = {
   status: "ACTIVE",
   password: "",
   confirmPassword: "",
-  branchId: "",
+  branches: [],
   roles: "",
 };
 export const UserStatus: { id: string; name: string; value: string }[] = [

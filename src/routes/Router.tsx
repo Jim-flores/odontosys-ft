@@ -14,6 +14,7 @@ import CustumerInformation from "@/modules/custumers/components/custumerInformat
 import Information from "@/modules/custumers/components/custumerInformation/Information";
 import Odontogram from "@/modules/custumers/components/custumerInformation/Odontogram";
 import AppointmentsPage from "@/modules/appointments/pages/AppointmentsPage";
+import Treatment from "@/modules/custumers/components/custumerInformation/Treatment";
 
 const Router = () => {
   return (
@@ -44,6 +45,7 @@ const Router = () => {
               <Route index element={<Information />} />
               <Route path="filiacion" element={<Information />} />
               <Route path="odontograma" element={<Odontogram />} />
+              <Route path="procedimiento" element={<Treatment />} />
             </Route>
             <Route path="company" element={<CompanyPage />} />
           </Route>
