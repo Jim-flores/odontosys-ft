@@ -83,7 +83,7 @@ export const defaultAppointmentAddValues: CreateAppointmentInput = {
   endAt: "",
   clientId: "",
   userId: "",
-  branches: [],
+  branchId: "",
 };
 
 export const formatAppointmentStatus = (
