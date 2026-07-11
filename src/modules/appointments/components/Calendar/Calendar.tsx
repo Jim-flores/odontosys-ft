@@ -65,12 +65,22 @@ export default function Calendar() {
 
     const isCompact = duration <= 30;
     return (
-      <div>
-        <div className="flex items-center gap-1">
-          <b>{timeText}</b>
-          <span className="nowrap">{event.title}</span>
+      <div className="w-full overflow-hidden rounded-md px-1 py-0.5">
+        <div className="flex items-center gap-1 text-xs">
+          <span className="shrink-0 font-semibold text-slate-800 dark:text-white">
+            {timeText}
+          </span>
+
+          <span className="truncate font-medium text-slate-900 dark:text-white">
+            {event.title}
+          </span>
         </div>
-        {!isCompact && <div>{event.extendedProps.treatment}</div>}
+
+        {!isCompact && (
+          <p className="mt-0.5 truncate text-[11px] text-slate-600">
+            {event.extendedProps.treatment}
+          </p>
+        )}
       </div>
     );
   };
