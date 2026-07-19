@@ -1,94 +1,204 @@
 "use client";
 
-import { TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import {
+  ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
 
-export const description = "A simple area chart";
-
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
+  {
+    month: "Ene",
+    arequipa: 24500,
+    puno: 18200,
+    juliaca: 15800,
+  },
+  {
+    month: "Feb",
+    arequipa: 26800,
+    puno: 19500,
+    juliaca: 17200,
+  },
+  {
+    month: "Mar",
+    arequipa: 25300,
+    puno: 21000,
+    juliaca: 18500,
+  },
+  {
+    month: "Abr",
+    arequipa: 29100,
+    puno: 22400,
+    juliaca: 20100,
+  },
+  {
+    month: "May",
+    arequipa: 31500,
+    puno: 21800,
+    juliaca: 22300,
+  },
+  {
+    month: "Jun",
+    arequipa: 33800,
+    puno: 24700,
+    juliaca: 23500,
+  },
 ];
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  arequipa: {
+    label: "Arequipa",
     color: "var(--chart-1)",
+  },
+  puno: {
+    label: "Puno",
+    color: "var(--chart-2)",
+  },
+  juliaca: {
+    label: "Juliaca",
+    color: "var(--chart-3)",
   },
 } satisfies ChartConfig;
 
 export function Chart1() {
   return (
-    <Card>
+    <Card className="flex min-h-0 flex-col">
       <CardHeader>
-        <CardTitle>Area Chart</CardTitle>
+        <CardTitle>Ingresos por sucursal</CardTitle>
+
         <CardDescription>
-          Showing total visitors for the last 6 months
+          Comparación de ingresos mensuales entre las tres sucursales
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
+
+      <CardContent className="min-h-0 flex-1">
+        <ChartContainer
+          config={chartConfig}
+          className="h-full min-h-0 w-full aspect-auto"
+        >
           <AreaChart
             accessibilityLayer
             data={chartData}
             margin={{
-              left: 12,
-              right: 12,
+              top: 20,
+              right: 20,
+              left: 0,
+              bottom: 0,
             }}
           >
             <CartesianGrid vertical={false} />
+
             <XAxis
               dataKey="month"
               tickLine={false}
               axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickMargin={10}
             />
+
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={10}
+              tickFormatter={(value) => `S/ ${(value / 1000).toFixed(0)}k`}
+            />
+
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
+              content={
+                <ChartTooltipContent
+                  indicator="dot"
+                  formatter={(value) =>
+                    `S/ ${Number(value).toLocaleString("es-PE")}`
+                  }
+                />
+              }
             />
+
+            <ChartLegend content={<ChartLegendContent />} />
+
+            <defs>
+              <linearGradient id="fillArequipa" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-arequipa)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-arequipa)"
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+
+              <linearGradient id="fillPuno" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-puno)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-puno)"
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+
+              <linearGradient id="fillJuliaca" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-juliaca)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-juliaca)"
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+            </defs>
+
             <Area
-              dataKey="desktop"
+              dataKey="arequipa"
               type="natural"
-              fill="var(--color-desktop)"
+              fill="url(#fillArequipa)"
               fillOpacity={0.4}
-              stroke="var(--color-desktop)"
+              stroke="var(--color-arequipa)"
+              stackId="a"
+            />
+
+            <Area
+              dataKey="puno"
+              type="natural"
+              fill="url(#fillPuno)"
+              fillOpacity={0.4}
+              stroke="var(--color-puno)"
+              stackId="b"
+            />
+
+            <Area
+              dataKey="juliaca"
+              type="natural"
+              fill="url(#fillJuliaca)"
+              fillOpacity={0.4}
+              stroke="var(--color-juliaca)"
+              stackId="c"
             />
           </AreaChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 leading-none font-medium">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="text-muted-foreground flex items-center gap-2 leading-none">
-              January - June 2024
-            </div>
-          </div>
-        </div>
-      </CardFooter>
     </Card>
   );
 }

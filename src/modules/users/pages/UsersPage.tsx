@@ -90,14 +90,17 @@ const UsersPage = () => {
           return <AppTableColumnHeader column={column} title="Sucursal" />;
         },
 
-        cell: ({ row }) => (
-          <div className="flex flex-col">
-            <Typography variant="small">
-              {branch.find((b) => b.id === row.original.branches[0].id)?.name ||
-                "N/A"}
-            </Typography>
-          </div>
-        ),
+        cell: ({ row }) => {
+          const firstBranch = row.original.branches?.[0];
+
+          return (
+            <div className="flex flex-col">
+              <Typography variant="small">
+                {branch.find((b) => b.id === firstBranch?.id)?.name ?? "N/A"}
+              </Typography>
+            </div>
+          );
+        },
         enableHiding: true,
         enableSorting: false,
       },

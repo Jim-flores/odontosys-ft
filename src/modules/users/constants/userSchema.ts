@@ -20,7 +20,20 @@ export const UserResponseSchema = z.object({
   // solo el primer rol del usuario
   roles: z.string(),
 });
-
+export const UserFormSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  lastName: z.string(),
+  email: z.string(),
+  phone: z.string(),
+  dni: z.string(),
+  address: z.string().optional(),
+  status: UserStatus,
+  createdAt: z.string(),
+  branches: z.array(z.string()),
+  // solo el primer rol del usuario
+  roles: z.string(),
+});
 export const UserRequestSchema = z
   .object({
     name: z
@@ -57,7 +70,7 @@ export const UserRequestSchema = z
       .string()
       .min(6, "Minimo 6 caracteres")
       .nonempty("El campo es obligatorio"),
-    branches: z.array(z.string()).optional(),
+    branches: z.array(z.string()),
     roles: z
       .string()
       .nonempty("Seleccione un rol")

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  UserFormSchema,
   UserRequestSchema,
   UserResponseSchema,
   UserStatus,
@@ -8,3 +9,5 @@ import {
 export type UserDTO = z.infer<typeof UserResponseSchema>;
 export type UserStatusEnum = z.infer<typeof UserStatus>;
 export type UserRequestDTO = z.infer<typeof UserRequestSchema>;
+
+export type UserFormDTO = z.infer<typeof UserFormSchema>;

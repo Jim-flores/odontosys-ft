@@ -43,13 +43,21 @@ export const Typography = ({
               : "p");
 
   const variants = {
-    h1: "scroll-m-20 text-balance text-4xl leading-[1.08] font-semibold tracking-normal text-foreground/95 lg:text-5xl",
-    h2: "scroll-m-20 border-b border-border/60 pb-3 text-3xl leading-tight font-semibold tracking-normal text-foreground/95 first:mt-0",
-    h3: "scroll-m-20 text-2xl leading-tight font-semibold tracking-normal text-foreground/90",
-    h4: "scroll-m-20 text-xl leading-snug font-medium tracking-normal text-foreground/90",
-    p: "leading-7 font-normal text-foreground/80 [&:not(:first-child)]:mt-5",
+    h1: "scroll-m-20 text-balance text-3xl sm:text-4xl lg:text-5xl leading-[1.08] font-semibold tracking-normal text-foreground/95",
+
+    h2: "scroll-m-20 border-b border-border/60 pb-3 text-2xl sm:text-3xl leading-tight font-semibold tracking-normal text-foreground/95 first:mt-0",
+
+    h3: "scroll-m-20 text-xl sm:text-2xl leading-tight font-semibold tracking-normal text-foreground/90",
+
+    // Corregido: ya no es text-xs en móvil, mantiene jerarquía sobre el párrafo
+    h4: "scroll-m-20 text-lg sm:text-xl leading-snug font-medium tracking-normal text-foreground/90",
+
+    p: "text-base leading-7 font-normal text-foreground/80 [&:not(:first-child)]:mt-5",
+
+    // Cuidado con el contraste de text-sm + italic + opacidad 75%
     blockquote:
-      "mt-6 rounded-md border border-border/60 bg-background/45 px-5 py-4 text-sm leading-7 font-normal text-foreground/75 italic shadow-sm backdrop-blur-sm",
+      "mt-6 rounded-md border border-border/60 bg-background/45 px-5 py-4 text-sm leading-7 font-normal text-foreground/80 italic shadow-sm backdrop-blur-sm",
+
     list: "my-6 ml-6 list-disc leading-7 text-foreground/80 [&>li]:mt-2",
     inlineCode:
       "relative rounded-md border border-border/60 bg-background/55 px-1.5 py-0.5 font-mono text-[0.85em] font-medium text-foreground/90 shadow-sm backdrop-blur-sm",

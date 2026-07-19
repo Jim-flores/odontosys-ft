@@ -3,7 +3,7 @@ import { useBranchStore } from "@/store/useBranchStore";
 import { useForm } from "react-hook-form";
 import { UserDTO, UserRequestDTO } from "../interfaces/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserRequestSchema, UserResponseSchema } from "../constants/userSchema";
+import { UserFormSchema, UserRequestSchema } from "../constants/userSchema";
 import { defaultUserAddValues, UserStatus } from "../constants/userConstants";
 import InputFx from "@/components/customFormFields/InputFx";
 import SelectFx from "@/components/customFormFields/SelectFx";
@@ -13,6 +13,9 @@ import { useAuthorizationStore } from "@/store/useAuthorizationStore";
 import InputPasswordFx from "@/components/customFormFields/InputPasswordFx";
 import { useUserQuery } from "../hooks/useUserQuery";
 import { useDialogStore } from "@/store/useDialogStore";
+import InputSearchDni from "@/components/customFormFields/InputSearchDni";
+import ComboboxFx from "@/components/customFormFields/ComboboxFx";
+
 interface Props {
   data?: UserDTO;
 }
@@ -25,26 +28,23 @@ export const UserFormDialog = ({ data }: Props) => {
     resolver: zodResolver(UserRequestSchema),
     defaultValues: defaultUserAddValues,
   });
-  const editForm = useForm<UserDTO>({
-    resolver: zodResolver(UserResponseSchema),
+  console.log({ data });
+  type UserForm = Omit<UserDTO, "branches"> & {
+    branches: string[];
+  };
+  const editForm = useForm<UserForm>({
+    resolver: zodResolver(UserFormSchema),
     defaultValues: {
       ...data,
+      branches: data?.branches?.map((b) => b.id) || [],
     },
   });
-  // useEffect(() => {
-  //   if (!data?.id) return;
-  //   if (!branch.length || !roles.length) return;
-  //   editForm.reset({
-  //     ...data,
-  //   })
-
-  // }, [branch, roles])
 
   const onSubmitAdd = async (values: UserRequestDTO) => {
     create.mutate(values);
     closeDialog();
   };
-  const onSubmitEdit = async (values: UserDTO) => {
+  const onSubmitEdit = async (values: UserForm) => {
     if (!data?.id) return;
     update.mutate({ id: data.id, data: values });
     closeDialog();
@@ -64,17 +64,10 @@ export const UserFormDialog = ({ data }: Props) => {
         <InputFx name="address" label="Dirección" />
       </div>
       <div className="row-space">
-        <SelectFx
-          name="branchId"
+        <ComboboxFx
+          name="branches"
           label="Sucursal"
           options={branch}
-          getLabel={(e) => e.name}
-          getValue={(e) => e.id}
-        />
-        <SelectFx
-          name="roles"
-          label="Rol"
-          options={roles}
           getLabel={(e) => e.name}
           getValue={(e) => e.id}
         />
@@ -104,7 +97,18 @@ export const UserFormDialog = ({ data }: Props) => {
         <InputFx name="lastName" label="Apellido" placeholder="Apellido" />
       </div>
       <div className="row-space">
-        <InputFx name="dni" label="Dni" placeholder="70000000" />
+        {/* <InputFx name="dni" label="Dni" placeholder="70000000" /> */}
+        <InputSearchDni
+          name="dni"
+          label="DNI"
+          onFound={(persona) => {
+            addForm.setValue("name", persona.nombres);
+            addForm.setValue(
+              "lastName",
+              `${persona.apellidoPaterno} ${persona.apellidoMaterno}`,
+            );
+          }}
+        />
         <InputFx name="phone" label="Telefono" />
       </div>
       <div className="row-space">
@@ -116,17 +120,11 @@ export const UserFormDialog = ({ data }: Props) => {
         <InputPasswordFx name="confirmPassword" label="Confirmar contraseña" />
       </div>
       <div className="row-space">
-        {/* <SelectFx
-          name="status"
-          label="Estado"
-          options={UserStatus}
-          getLabel={(e) => e.name}
-          getValue={(e) => e.value}
-        /> */}
-        <SelectFx
-          name="branchId"
+        <ComboboxFx
+          name="branches"
           label="Sucursal"
           options={branch}
+          placeholder="Seleccione..."
           getLabel={(e) => e.name}
           getValue={(e) => e.id}
         />
@@ -138,13 +136,7 @@ export const UserFormDialog = ({ data }: Props) => {
           getValue={(e) => e.id}
         />
       </div>
-      {/*<MultiCheckboxFx
-          name="roles"
-          label="Roles"
-          options={roles}
-          getLabel={(e) => e.name}
-          getValue={(e) => e.id}
-        />*/}
+
       <Button className="w-24" type="submit">
         Guardar
       </Button>

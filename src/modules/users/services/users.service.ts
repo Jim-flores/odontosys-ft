@@ -1,6 +1,6 @@
 import { PaginationResponse } from "@/interfaces/PaginationType";
 import { paginationMap } from "@/utils/paginationMap";
-import { UserDTO, UserRequestDTO } from "../interfaces/types";
+import { UserDTO, UserFormDTO, UserRequestDTO } from "../interfaces/types";
 import { toast } from "sonner";
 import { FetchDataParams, FilterConfig } from "@/hooks/useServerTable";
 import { buildApiParams } from "@/utils/apiUtils";
@@ -48,7 +48,7 @@ class UsersServices {
     return data;
   };
 
-  static update = async (id: string, values: UserDTO) => {
+  static update = async (id: string, values: UserFormDTO) => {
     const newData = {
       name: values.name,
       lastName: values.lastName,

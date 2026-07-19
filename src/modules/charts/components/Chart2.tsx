@@ -1,95 +1,118 @@
 "use client";
 
-import { Activity, TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import {
+  ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from "@/components/ui/chart";
 
-export const description = "A step area chart";
-
 const chartData = [
-  { month: "January", desktop: 186 },
-  { month: "February", desktop: 305 },
-  { month: "March", desktop: 237 },
-  { month: "April", desktop: 73 },
-  { month: "May", desktop: 209 },
-  { month: "June", desktop: 214 },
+  {
+    month: "Ene",
+    total: 120,
+    attended: 82,
+  },
+  {
+    month: "Feb",
+    total: 135,
+    attended: 94,
+  },
+  {
+    month: "Mar",
+    total: 148,
+    attended: 105,
+  },
+  {
+    month: "Abr",
+    total: 162,
+    attended: 118,
+  },
+  {
+    month: "May",
+    total: 175,
+    attended: 127,
+  },
+  {
+    month: "Jun",
+    total: 190,
+    attended: 142,
+  },
 ];
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  total: {
+    label: "Total de pacientes",
     color: "var(--chart-1)",
-    icon: Activity,
+  },
+  attended: {
+    label: "Pacientes atendidos",
+    color: "var(--chart-2)",
   },
 } satisfies ChartConfig;
 
 export function Chart2() {
   return (
-    <Card>
+    <Card className="flex min-h-0 flex-col">
       <CardHeader>
-        <CardTitle>Area Chart - Step</CardTitle>
+        <CardTitle>Pacientes por mes</CardTitle>
+
         <CardDescription>
-          Showing total visitors for the last 6 months
+          Comparación entre pacientes totales y pacientes atendidos
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig}>
-          <AreaChart
+
+      <CardContent className="min-h-0 flex-1">
+        <ChartContainer
+          config={chartConfig}
+          className="h-full min-h-0 w-full aspect-auto"
+        >
+          <BarChart
             accessibilityLayer
             data={chartData}
             margin={{
-              left: 12,
-              right: 12,
+              top: 20,
+              right: 20,
+              left: 0,
+              bottom: 0,
             }}
           >
             <CartesianGrid vertical={false} />
+
             <XAxis
               dataKey="month"
               tickLine={false}
+              tickMargin={10}
               axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
             />
+
+            <YAxis tickLine={false} axisLine={false} tickMargin={10} />
+
             <ChartTooltip
               cursor={false}
-              content={<ChartTooltipContent hideLabel />}
+              content={<ChartTooltipContent indicator="dashed" />}
             />
-            <Area
-              dataKey="desktop"
-              type="step"
-              fill="var(--color-desktop)"
-              fillOpacity={0.4}
-              stroke="var(--color-desktop)"
-            />
-          </AreaChart>
+
+            <ChartLegend content={<ChartLegendContent />} />
+
+            <Bar dataKey="total" fill="var(--color-total)" radius={4} />
+
+            <Bar dataKey="attended" fill="var(--color-attended)" radius={4} />
+          </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 leading-none font-medium">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="text-muted-foreground flex items-center gap-2 leading-none">
-              January - June 2024
-            </div>
-          </div>
-        </div>
-      </CardFooter>
     </Card>
   );
 }
